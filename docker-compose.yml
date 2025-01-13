@@ -26,18 +26,13 @@ services:
 
   flyway:
     image: flyway/flyway
+    command: -url=jdbc:postgresql://postgres:5432/shop_db -user=shop_user -password=shop_password -baselineOnMigrate=true migrate
     volumes:
-      - ./scripts/migrations/_legacy:/flyway/legacy/sql
-      - ./scripts/migrations/actual:/flyway/sql
-      - ./flyway/_legacy/flyway.conf:/flyway/conf/legacy/flyway.conf
-      - ./flyway/actual/flyway.conf:/flyway/conf/flyway.conf
+      - ./scripts/migrations:/flyway/sql
+      - ./flyway/flyway.conf:/flyway/conf/flyway.conf
     depends_on:
       postgres:
         condition: service_healthy
-    entrypoint: >
-      /bin/sh -c "flyway -configFiles=/flyway/conf/legacy/flyway.conf migrate && 
-                  flyway repair &&
-                  flyway -configFiles=/flyway/conf/flyway.conf migrate"
     networks:
       - shop_network
 

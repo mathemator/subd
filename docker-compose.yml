@@ -10,17 +10,40 @@ services:
       POSTGRES_PASSWORD: shop_password
     ports:
       - "5432:5432"
+    healthcheck:
+      test: pg_isready -d shop_db -U shop_user || exit 1
+      interval: 1s
+      timeout: 60s
+      retries: 5
+      start_period: 110s
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./scripts:/docker-entrypoint-initdb.d  # Папка с инициализационными скриптами
+    command: |
+      bash -c "mkdir -p /mnt/shop_ts && chown -R postgres:postgres /mnt/shop_ts && exec docker-entrypoint.sh postgres"
+    networks:
+      - shop_network
 
   flyway:
     image: flyway/flyway
-    command: -url=jdbc:postgresql://postgres:5432/shop_db -user=shop_user -password=shop_password -baselineOnMigrate=true migrate
     volumes:
-      - ./scripts/migrations:/flyway/sql
+      - ./scripts/migrations/_legacy:/flyway/legacy/sql
+      - ./scripts/migrations/actual:/flyway/sql
+      - ./flyway/_legacy/flyway.conf:/flyway/conf/legacy/flyway.conf
+      - ./flyway/actual/flyway.conf:/flyway/conf/flyway.conf
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "flyway -configFiles=/flyway/conf/legacy/flyway.conf migrate && 
+                  flyway repair &&
+                  flyway -configFiles=/flyway/conf/flyway.conf migrate"
+    networks:
+      - shop_network
+
+networks:
+  shop_network:
+    driver: bridge
 
 volumes:
   postgres_data:

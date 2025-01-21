@@ -1,3 +1,4 @@
+# docker build -t postgres-master:1.0 -f postgres-master.dockerfile .
 FROM postgres:17-bullseye
 
 # Копируем конфигурационные файлы

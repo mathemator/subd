@@ -62,7 +62,7 @@ services:
         chmod 600 /var/lib/postgresql/.pgpass &&
         su - postgres -c '
         pg_basebackup --host=postgres_master --username=replication_user --pgdata=/var/lib/postgresql/data --wal-method=stream --write-recovery-conf ' &&
-        exec /usr/local/bin/docker-entrypoint.sh postgres"
+        exec /usr/local/bin/docker-entrypoint.sh postgres -c 'recovery_min_apply_delay=5min'"
     networks:
       - shop_network
 

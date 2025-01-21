@@ -2,9 +2,12 @@ version: '3.8'
 
 services:
   postgres_master:
-    build:
-      context: .
-      dockerfile: postgres-master.dockerfile # Указываем путь к Dockerfile
+#    данная секция исправно работает на линуксе, но с Docker Desktop
+#    возникают невнятные проблемы. код добавляю как дополнительный полезный штрих
+#    поэтому предполагается, что образ из .dockerfile собран независимо заранее
+#    build:
+#      context: .
+#      dockerfile: postgres-master.dockerfile
     image: postgres-master:1.0
     container_name: postgres_master
     environment:

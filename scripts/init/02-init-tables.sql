@@ -1,5 +1,5 @@
 -- Создание таблицеспейса для данных
-CREATE TABLESPACE shop_ts LOCATION '/mnt/shop_ts';
+--CREATE TABLESPACE shop_ts LOCATION '/mnt/shop_ts';
 
 -- Создание схем с указанием таблицеспейса
 CREATE SCHEMA IF NOT EXISTS customer_data;

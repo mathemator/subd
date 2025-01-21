@@ -34,6 +34,63 @@ services:
     networks:
       - shop_network
 
+  flyway_master:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://postgres_master:5432/shop_db -user=shop_user -password=shop_password -baselineOnMigrate=true migrate
+    volumes:
+      - ./scripts/migrations/master:/flyway/sql
+      - ./flyway/master/flyway.conf:/flyway/conf/flyway.conf
+    depends_on:
+      postgres_master:
+        condition: service_healthy
+    networks:
+      - shop_network
+
+  flyway_master_logical:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://postgres_master:5432/logical_db -user=logical_user -password=logical_password -baselineOnMigrate=true migrate
+    volumes:
+      - ./scripts/migrations/master_logical:/flyway/sql
+      - ./flyway/master_logical/flyway.conf:/flyway/conf/flyway.conf
+    depends_on:
+      postgres_master:
+        condition: service_healthy
+      flyway_master:
+        condition: service_completed_successfully
+    networks:
+      - shop_network
+
+  postgres_logical:
+    image: postgres:17-bullseye
+    container_name: postgres_logical
+    ports:
+      - "5434:5432" # Чтобы не конфликтовать с первым кластером
+    environment:
+      POSTGRES_USER: logical_user
+      POSTGRES_PASSWORD: logical_password
+      POSTGRES_DB: logical_db
+    depends_on:
+      postgres_master:
+        condition: service_healthy
+      flyway_master:
+        condition: service_completed_successfully
+    networks:
+      - shop_network
+    volumes:
+      - postgres_logical_data:/var/lib/postgresql/data
+
+  flyway_logical:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://postgres_logical:5432/logical_db -user=logical_user -password=logical_password -baselineOnMigrate=true migrate
+    volumes:
+      - ./scripts/migrations/logical:/flyway/sql
+      - ./flyway/logical/flyway.conf:/flyway/conf/flyway.conf
+    depends_on:
+      flyway_master_logical:
+        condition: service_completed_successfully
+    networks:
+      - shop_network
+
   postgres_replica:
     image: postgres:17-bullseye
     container_name: postgres_replica
@@ -42,8 +99,8 @@ services:
       POSTGRES_USER: shop_user
       POSTGRES_PASSWORD: shop_password
     depends_on:
-      - postgres_master
-      - flyway
+      flyway_logical:
+        condition: service_completed_successfully
     ports:
       - "5433:5432"
     healthcheck:
@@ -66,18 +123,6 @@ services:
     networks:
       - shop_network
 
-  flyway:
-    image: flyway/flyway
-    command: -url=jdbc:postgresql://postgres_master:5432/shop_db -user=shop_user -password=shop_password -baselineOnMigrate=true migrate
-    volumes:
-      - ./scripts/migrations:/flyway/sql
-      - ./flyway/flyway.conf:/flyway/conf/flyway.conf
-    depends_on:
-      postgres_master:
-        condition: service_healthy
-    networks:
-      - shop_network
-
 networks:
   shop_network:
     driver: bridge
@@ -87,3 +132,6 @@ volumes:
     driver: local
   postgres_replica_data:
     driver: local
+  postgres_logical_data:
+    driver: local
+

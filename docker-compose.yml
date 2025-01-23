@@ -1,9 +1,15 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:17-bullseye
-    container_name: postgres_db
+  postgres_master:
+#    данная секция исправно работает на линуксе, но с Docker Desktop
+#    возникают невнятные проблемы. код добавляю как дополнительный полезный штрих
+#    поэтому предполагается, что образ из .dockerfile собран независимо заранее
+#    build:
+#      context: .
+#      dockerfile: postgres-master.dockerfile
+    image: postgres-master:1.0
+    container_name: postgres_master
     environment:
       POSTGRES_DB: shop_db
       POSTGRES_USER: shop_user
@@ -18,21 +24,102 @@ services:
       start_period: 110s
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./scripts:/docker-entrypoint-initdb.d  # Папка с инициализационными скриптами
-    command: |
-      bash -c "mkdir -p /mnt/shop_ts && chown -R postgres:postgres /mnt/shop_ts && exec docker-entrypoint.sh postgres"
+      - ./scripts/init:/docker-entrypoint-initdb.d  # Папка с инициализационными скриптами
+    command: >
+      bash -c "mkdir -p /mnt/shop_ts && 
+      chown -R postgres:postgres /mnt/shop_ts && 
+      exec docker-entrypoint.sh postgres 
+      -c config_file=/etc/postgresql/postgresql.conf
+      -c hba_file=/etc/postgresql/pg_hba.conf"
     networks:
       - shop_network
 
-  flyway:
+  flyway_master:
     image: flyway/flyway
-    command: -url=jdbc:postgresql://postgres:5432/shop_db -user=shop_user -password=shop_password -baselineOnMigrate=true migrate
+    command: -url=jdbc:postgresql://postgres_master:5432/shop_db -user=shop_user -password=shop_password -baselineOnMigrate=true migrate
     volumes:
-      - ./scripts/migrations:/flyway/sql
-      - ./flyway/flyway.conf:/flyway/conf/flyway.conf
+      - ./scripts/migrations/master:/flyway/sql
+      - ./flyway/master/flyway.conf:/flyway/conf/flyway.conf
     depends_on:
-      postgres:
+      postgres_master:
         condition: service_healthy
+    networks:
+      - shop_network
+
+  flyway_master_logical:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://postgres_master:5432/logical_db -user=logical_user -password=logical_password -baselineOnMigrate=true migrate
+    volumes:
+      - ./scripts/migrations/master_logical:/flyway/sql
+      - ./flyway/master_logical/flyway.conf:/flyway/conf/flyway.conf
+    depends_on:
+      postgres_master:
+        condition: service_healthy
+      flyway_master:
+        condition: service_completed_successfully
+    networks:
+      - shop_network
+
+  postgres_logical:
+    image: postgres:17-bullseye
+    container_name: postgres_logical
+    ports:
+      - "5434:5432" # Чтобы не конфликтовать с первым кластером
+    environment:
+      POSTGRES_USER: logical_user
+      POSTGRES_PASSWORD: logical_password
+      POSTGRES_DB: logical_db
+    depends_on:
+      postgres_master:
+        condition: service_healthy
+      flyway_master:
+        condition: service_completed_successfully
+    networks:
+      - shop_network
+    volumes:
+      - postgres_logical_data:/var/lib/postgresql/data
+
+  flyway_logical:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://postgres_logical:5432/logical_db -user=logical_user -password=logical_password -baselineOnMigrate=true migrate
+    volumes:
+      - ./scripts/migrations/logical:/flyway/sql
+      - ./flyway/logical/flyway.conf:/flyway/conf/flyway.conf
+    depends_on:
+      flyway_master_logical:
+        condition: service_completed_successfully
+    networks:
+      - shop_network
+
+  postgres_replica:
+    image: postgres:17-bullseye
+    container_name: postgres_replica
+    environment:
+      POSTGRES_DB: shop_db
+      POSTGRES_USER: shop_user
+      POSTGRES_PASSWORD: shop_password
+    depends_on:
+      flyway_logical:
+        condition: service_completed_successfully
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: pg_isready -d shop_db -U shop_user || exit 1
+      interval: 1s
+      timeout: 60s
+      retries: 5
+      start_period: 110s
+    volumes:
+      - postgres_replica_data:/var/lib/postgresql/data
+    command: >
+      bash -c "mkdir -p /mnt/shop_ts &&
+        chown -R postgres:postgres /mnt/shop_ts &&
+        echo 'postgres_master:5432:*:replication_user:replication_password' >> /var/lib/postgresql/.pgpass &&
+        chown postgres:postgres /var/lib/postgresql/.pgpass &&
+        chmod 600 /var/lib/postgresql/.pgpass &&
+        su - postgres -c '
+        pg_basebackup --host=postgres_master --username=replication_user --pgdata=/var/lib/postgresql/data --wal-method=stream --write-recovery-conf ' &&
+        exec /usr/local/bin/docker-entrypoint.sh postgres -c 'recovery_min_apply_delay=5min'"
     networks:
       - shop_network
 
@@ -43,3 +130,8 @@ networks:
 volumes:
   postgres_data:
     driver: local
+  postgres_replica_data:
+    driver: local
+  postgres_logical_data:
+    driver: local
+

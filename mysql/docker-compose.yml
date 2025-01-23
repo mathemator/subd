@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0.15
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    command: 
+      --init-file /init.sql
+    healthcheck:
+      test: mysqladmin ping -h localhost -u root -proot || exit 1
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - data:/var/lib/mysql
+      - ./config/init.sql:/init.sql
+      - ./config:/etc/mysql/conf.d
+    expose:
+      - "3306"
+    ports:
+      - "3309:3306"
+    networks:
+      - mysql_shop_network
+
+  flyway:
+    image: flyway/flyway
+    command:
+      - "-url=jdbc:mysql://mysql:3306/?allowPublicKeyRetrieval=true&useSSL=false"
+      - -user=root
+      - -password=root
+      - -baselineOnMigrate=true
+      - migrate
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./scripts/migrations/:/flyway/sql
+      - ./flyway/flyway.conf:/flyway/conf/flyway.conf
+    networks:
+      - mysql_shop_network
+
+  sysbench:
+    image: severalnines/sysbench
+    depends_on:
+      flyway:
+        condition: service_completed_successfully
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    volumes:
+      - ./sysbench:/results  # Монтируем папку для сохранения результатов
+    networks:
+      - mysql_shop_network
+    command: >
+      sh -c "
+        echo 'Running sysbench prepare...' &&
+        sysbench --mysql-host=$$MYSQL_HOST --mysql-port=$$MYSQL_PORT --mysql-user=$$MYSQL_USER --mysql-password=$$MYSQL_PASSWORD --mysql-db=shop_db oltp_read_write prepare > /results/prepare.log 2>&1 &&
+        echo 'Running sysbench run...' &&
+        sysbench --mysql-host=$$MYSQL_HOST --mysql-port=$$MYSQL_PORT --mysql-user=$$MYSQL_USER --mysql-password=$$MYSQL_PASSWORD --mysql-db=shop_db oltp_read_write run > /results/run.log 2>&1 &&
+        echo 'Sysbench results saved to /results/'
+      "
+
+networks:
+  mysql_shop_network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local

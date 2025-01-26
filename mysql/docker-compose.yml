@@ -5,7 +5,7 @@ services:
     image: mysql:8.0.15
     environment:
       - MYSQL_ROOT_PASSWORD=root
-    command: 
+    command:
       --init-file /init.sql
     healthcheck:
       test: mysqladmin ping -h localhost -u root -proot || exit 1
@@ -14,6 +14,7 @@ services:
       retries: 10
     volumes:
       - data:/var/lib/mysql
+      - ./scripts/tasks:/var/lib/mysql-files  # Папка с инициализационными скриптами
       - ./config/init.sql:/init.sql
       - ./config:/etc/mysql/conf.d
     expose:

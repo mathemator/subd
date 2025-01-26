@@ -2,7 +2,8 @@
 # аутентификация для старых клиентских инструментов
 default-authentication-plugin=mysql_native_password
 # Настройка памяти
-innodb_buffer_pool_size = 2G
+innodb_buffer_pool_size = 1G
+innodb_buffer_pool_instances = 4
 innodb_log_file_size = 512M
 innodb_log_buffer_size = 128M
 
@@ -10,14 +11,20 @@ innodb_log_buffer_size = 128M
 max_connections = 200
 thread_cache_size = 50
 
-# Кэширование запросов
-query_cache_size = 64M
-# максимальный размер результата хранимого в кэше
-query_cache_limit = 4M
+# Кэширование планов выполнения
+table_definition_cache = 400
+table_open_cache = 800
 
 # Логи
 # логирование медленных
 slow_query_log = 1
-slow_query_log_file = /var/log/mysql-slow.log
+slow_query_log_file = /var/lib/mysql/mysql-slow.log
 # критерий определений медленных в секундах
 long_query_time = 2
+
+# работа с файлами
+secure-file-priv = /var/lib/mysql-files
+local_infile=1
+
+# Кодировки
+character-set-filesystem = utf8mb4

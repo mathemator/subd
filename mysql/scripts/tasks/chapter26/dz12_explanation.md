@@ -1,3 +1,22 @@
+## вызов процедуры с транзакцией update_product_categories
+```sql
+CALL update_product_categories('iPhone 15', 
+                               100000.00, 
+                               1, 
+                               1, 
+                               '{"color": "silver"}', 
+                               '["Electronics", "Gadgets", "Smartphones"]');
+```
+### Добавился продукт:
+| ID | Product        | Price | Category | Subcategory | Attributes               |
+|----|----------------|-------|----------|-------------|--------------------------|
+| 12 | iPhone 15      | 100000.00 | 1        | 1           | {"color": "silver"}  |
+### Добавились категории (Electronics уже была в таблице):
+| id | name      |
+|----|-----------|
+| 5  | Gadgets |
+| 6  | Smartphones |
+
 ## LOAD DATA загрузка .csv
 
 ```sql

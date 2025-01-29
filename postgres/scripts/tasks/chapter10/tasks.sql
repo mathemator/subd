@@ -32,7 +32,7 @@ commit;
 DELETE FROM
     product_data.product p
 USING
-    product_data.productcategory pc
+    product_data.product_category pc
 WHERE
     p.id = pc.product_id
     AND pc.category_id = 1;

@@ -59,8 +59,8 @@ BEGIN
         SELECT id INTO cat_id FROM category WHERE name = cat_name;
 
         -- Проверяем связь категории и продукта
-        IF NOT EXISTS (SELECT 1 FROM productcategory WHERE product_id = product_id AND category_id = cat_id) THEN
-            INSERT INTO productcategory (product_id, category_id) VALUES (product_id, cat_id);
+        IF NOT EXISTS (SELECT 1 FROM product_category WHERE product_id = product_id AND category_id = cat_id) THEN
+            INSERT INTO product_category (product_id, category_id) VALUES (product_id, cat_id);
         END IF;
     END LOOP;
 

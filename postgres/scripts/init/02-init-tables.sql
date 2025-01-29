@@ -50,21 +50,21 @@ CREATE INDEX idx_product_manufacturer ON product_data.product USING btree (manuf
 CREATE INDEX idx_product_name ON product_data.product USING btree (name) TABLESPACE shop_ts;
 CREATE INDEX idx_product_supplier ON product_data.product USING btree (supplier_id) TABLESPACE shop_ts;
 
--- Создание таблицы "productcategory" в схеме "product_data"
-CREATE TABLE product_data.productcategory (
+-- Создание таблицы "product_category" в схеме "product_data"
+CREATE TABLE product_data.product_category (
     product_id int4 NOT NULL,
     category_id int4 NOT NULL,
-    CONSTRAINT productcategory_pkey PRIMARY KEY (product_id, category_id)
+    CONSTRAINT product_category_pkey PRIMARY KEY (product_id, category_id)
 )
 TABLESPACE shop_ts;
 
--- Создание внешних ключей для "productcategory"
-ALTER TABLE product_data.productcategory
-    ADD CONSTRAINT productcategory_category_id_fkey
+-- Создание внешних ключей для "product_category"
+ALTER TABLE product_data.product_category
+    ADD CONSTRAINT product_category_category_id_fkey
     FOREIGN KEY (category_id) REFERENCES product_data.category(id);
 
-ALTER TABLE product_data.productcategory
-    ADD CONSTRAINT productcategory_product_id_fkey
+ALTER TABLE product_data.product_category
+    ADD CONSTRAINT product_category_product_id_fkey
     FOREIGN KEY (product_id) REFERENCES product_data.product(id) ON DELETE CASCADE;
 
 -- Создание таблицы "supplier" в схеме "product_data"

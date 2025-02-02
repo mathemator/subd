@@ -52,12 +52,12 @@ CREATE INDEX idx_product_name ON product (name);
 
 CREATE INDEX idx_product_supplier ON product (supplier_id);
 
-CREATE TABLE productcategory (
+CREATE TABLE product_category (
     product_id INT NOT NULL,
     category_id INT NOT NULL,
     PRIMARY KEY (product_id, category_id),
-    CONSTRAINT fk_productcategory_category FOREIGN KEY (category_id) REFERENCES category(id),
-    CONSTRAINT fk_productcategory_product FOREIGN KEY (product_id) REFERENCES product(id) ON delete CASCADE
+    CONSTRAINT fk_product_category_category FOREIGN KEY (category_id) REFERENCES category(id),
+    CONSTRAINT fk_product_category_product FOREIGN KEY (product_id) REFERENCES product(id) ON delete CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE purchase (

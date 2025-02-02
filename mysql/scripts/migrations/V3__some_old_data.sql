@@ -31,7 +31,7 @@ VALUES
     ('Soccer Ball', 20.00, 3, 2),
     ('Novel: Adventure Tales', 15.00, NULL, 3);
    
-INSERT INTO productcategory (product_id, category_id)
+INSERT INTO product_category (product_id, category_id)
 VALUES
     (1, 1),  -- Wireless Mouse -> Electronics
     (2, 2),  -- Electric Kettle -> Household

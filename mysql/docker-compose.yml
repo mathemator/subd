@@ -5,8 +5,6 @@ services:
     image: mysql:8.0.15
     environment:
       - MYSQL_ROOT_PASSWORD=root
-    command:
-      --init-file /init.sql
     healthcheck:
       test: mysqladmin ping -h localhost -u root -proot || exit 1
       interval: 5s
@@ -23,6 +21,12 @@ services:
       - "3309:3306"
     networks:
       - mysql_shop_network
+    entrypoint: >
+      bash -c "
+        chmod 644 /etc/mysql/conf.d/custom.cnf &&
+        chown mysql:mysql /etc/mysql/conf.d/custom.cnf &&
+        docker-entrypoint.sh mysqld --init-file /init.sql
+      "
 
   flyway:
     image: flyway/flyway

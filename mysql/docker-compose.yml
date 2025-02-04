@@ -2,11 +2,12 @@ version: '3.8'
 
 services:
   mysql:
-    image: mysql:8.0.15
+    image: mysql:8.0.18
     environment:
       - MYSQL_ROOT_PASSWORD=root
     healthcheck:
-      test: mysqladmin ping -h localhost -u root -proot || exit 1
+      test: >
+        mysql -h localhost -u root -proot -e "SELECT 1;" || exit 1
       interval: 5s
       timeout: 10s
       retries: 10

@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mysql:
+    image:  mysql_restore:1.0
+    container_name: mysql_restore
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+      - ./backup:/backup:rw
+      - ./config/my.cnf:/etc/mysql/my.cnf
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    networks:
+      - mysql_backup_network
+    entrypoint: >
+      bash -c "
+        /backup/restore.sh
+      "
+
+networks:
+  mysql_backup_network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local

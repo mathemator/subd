@@ -1,0 +1,1 @@
+create index product_price_idx on product(price);

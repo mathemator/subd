@@ -1,0 +1,12 @@
+INSERT INTO mysql_servers (hostgroup_id, hostname, port, status) VALUES (1, '10.0.2.10', 3306, 'ONLINE');
+INSERT INTO mysql_servers (hostgroup_id, hostname, port, status) VALUES (1, '10.0.2.11', 3306, 'ONLINE');
+INSERT INTO mysql_servers (hostgroup_id, hostname, port, status) VALUES (1, '10.0.2.12', 3306, 'ONLINE');
+INSERT INTO mysql_users (username, password, default_hostgroup) VALUES ('root','test1234!',1);
+UPDATE global_variables SET variable_value='proxysql' WHERE variable_name='mysql-monitor_username';
+UPDATE global_variables SET variable_value='proxysql' WHERE variable_name='mysql-monitor_password';
+LOAD MYSQL VARIABLES TO RUNTIME;
+SAVE MYSQL VARIABLES TO DISK;
+LOAD MYSQL USERS TO RUNTIME;
+SAVE MYSQL USERS TO DISK;
+LOAD MYSQL SERVERS TO RUNTIME;
+SAVE MYSQL SERVERS TO DISK;

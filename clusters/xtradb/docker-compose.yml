@@ -5,10 +5,13 @@ services:
     image: percona/percona-xtradb-cluster:8.0
     container_name: pxc-node1
     healthcheck:
+#      небольшая подкрутка времени для надежности на старт первой ноды, иначе флакует
+#      в целом надёжнее всего запускать по отдельности с первой ноды, а это сделано ради "одной кнопки"
       test: >
-        mysql -h localhost -u root -ptest1234! -e "SELECT 1;" || exit 1
+        sleep 20 && mysql -h localhost -u root -ptest1234! -e "SELECT 1 FROM people.titles;" || exit 1
       interval: 5s
-      timeout: 10s
+      start_period: 20s
+      timeout: 25s
       retries: 10
     ports:
       - "3306:3306"
@@ -24,11 +27,11 @@ services:
       - ./cert:/cert
       - ./config:/etc/percona-xtradb-cluster.conf.d
       - ./init_data/node1:/docker-entrypoint-initdb.d
+      - ./scripts/load:/var/lib/mysql-files
 
   pxc-node2:
     image: percona/percona-xtradb-cluster:8.0
     container_name: pxc-node2
-    privileged: true
     networks:
       pxc-network:
         ipv4_address: 10.0.2.11
@@ -46,7 +49,6 @@ services:
   pxc-node3:
     image: percona/percona-xtradb-cluster:8.0
     container_name: pxc-node3
-    privileged: true
     networks:
       pxc-network:
         ipv4_address: 10.0.2.12
@@ -60,7 +62,6 @@ services:
     depends_on:
       pxc-node1:
         condition: service_healthy
-
 
   proxysql:
     image: proxysql/proxysql
@@ -81,8 +82,8 @@ services:
       tail -f /dev/null
       "
     depends_on:
-      pxc-node1:
-        condition: service_healthy
+      pxc-node3:
+        condition: service_started
 
 
 networks:

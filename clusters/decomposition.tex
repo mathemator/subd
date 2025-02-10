@@ -10,14 +10,11 @@
 
 \geometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
 
-
 \title{Декомпозиция и нормализация данных на примере учебного файла}
 
 \author{Александр Гоппе}
 
 \date{\today}
-
-
 
 \begin{document}
 
@@ -60,14 +57,17 @@
         \item \textbf{languages} (id, name)
         \item \textbf{marital\_statuses} (id, name)
         \item \textbf{countries} (id, name, code)
-        \item \textbf{cities} (id, name, region, country\_id)
+        \item \textbf{cities} (id, name, region\_id, country\_id)
+        \item \textbf{regions} (id, name, country\_id)
         \item \textbf{streets} (id, name, city\_id)
         \item \textbf{addresses} (id, postal\_code, street\_id, building\_number)
         \item \textbf{customer\_addresses} (customer\_id, address\_id)
     \end{itemize}
 
+
     \subsection{Диаграмма конечной структуры}
     \begin{center}
+        \resizebox{\textwidth}{!}{%
         \begin{tikzpicture}[node distance=1.5cm, every node/.style={draw, minimum width=3cm, align=center}]
             \node (customers) {customers};
             \node (titles) [above left=of customers] {titles};
@@ -77,7 +77,8 @@
             \node (addresses) [below=of customers] {addresses};
             \node (customer_addresses) [below=of addresses] {customer\_addresses};
             \node (countries) [below right=of addresses] {countries};
-            \node (cities) [above right=of countries] {cities};
+            \node (regions) [above right=of countries] {regions};
+            \node (cities) [above=of regions] {cities};
             \node (streets) [above=of countries] {streets};
 
             \draw[->] (customers) -- (titles);
@@ -88,8 +89,32 @@
             \draw[->] (customer_addresses) -- (addresses);
             \draw[->] (addresses) -- (streets);
             \draw[->] (streets) -- (cities);
+            \draw[->] (cities) -- (regions);
             \draw[->] (cities) -- (countries);
-        \end{tikzpicture}
+            \draw[->] (regions) -- (countries);
+        \end{tikzpicture}%
+        }
+    \end{center}
+
+    \section{Первичная проверка корректности переноса}
+
+
+    \begin{center}
+        \resizebox{\textwidth}{!}{%
+            \begin{tabular}{|l|c|c|}
+                \hline
+                Запрос & версия & результат \\
+                \hline
+                select count(distinct first\_name, last\_name) from init\_customers where first\_name <> '' or last\_name <> '' & старая & 1122 \\
+                \hline
+                select count(distinct first\_name, last\_name) from customers & новая  & 1122 \\
+                \hline
+                select count(distinct postal\_code) from init\_customers & старая  & 1079 \\
+                \hline
+                select count(distinct postal\_code) from addresses & новая  & 1079 \\
+                \hline
+            \end{tabular}%
+        }
     \end{center}
 
 

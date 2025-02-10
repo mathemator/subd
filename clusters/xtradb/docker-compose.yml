@@ -85,7 +85,6 @@ services:
       pxc-node3:
         condition: service_started
 
-
 networks:
   pxc-network:
     driver: bridge

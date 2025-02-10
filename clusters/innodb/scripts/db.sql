@@ -1,10 +1,6 @@
 create DATABASE IF NOT EXISTS people;
 USE people;
 
-create user 'proxysql'@'10.0.2.20' identified by 'proxysql';
-grant REPLICATION CLIENT, PROCESS ON *.* TO 'proxysql'@'10.0.2.20';
-FLUSH PRIVILEGES;
-
 CREATE TABLE init_customers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(20),

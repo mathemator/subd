@@ -1,10 +1,6 @@
 create DATABASE IF NOT EXISTS people;
 USE people;
 
-create user 'proxysql'@'10.0.2.20' identified by 'proxysql';
-grant REPLICATION CLIENT, PROCESS ON *.* TO 'proxysql'@'10.0.2.20';
-FLUSH PRIVILEGES;
-
 CREATE TABLE init_customers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(20),
@@ -77,25 +73,21 @@ CREATE TABLE countries (
 CREATE TABLE regions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    country_id INT NULL,
-    FOREIGN KEY (country_id) REFERENCES countries(id)
+    country_id INT NULL
 );
 
 CREATE TABLE cities (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     region_id INT NULL,
-    country_id INT NULL,
-    FOREIGN KEY (region_id) REFERENCES regions(id),
-    FOREIGN KEY (country_id) REFERENCES countries(id)
+    country_id INT NULL
 );
 
 -- Создаем таблицу улиц
 CREATE TABLE streets (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    city_id INT NULL,
-    FOREIGN KEY (city_id) REFERENCES cities(id)
+    city_id INT NULL
 );
 
 -- Создаем таблицу адресов
@@ -103,8 +95,7 @@ CREATE TABLE addresses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     postal_code VARCHAR(20) NOT NULL,
     street_id INT NULL,
-    building_number VARCHAR(10) NULL,
-    FOREIGN KEY (street_id) REFERENCES streets(id)
+    building_number VARCHAR(10) NULL
 );
 
 -- Создаем таблицу клиентов
@@ -116,20 +107,13 @@ CREATE TABLE customers (
     birth_date DATE,
     gender_id INT,
     marital_status_id INT,
-    language_id INT,
-    FOREIGN KEY (title_id) REFERENCES titles(id),
-    FOREIGN KEY (gender_id) REFERENCES genders(id),
-    FOREIGN KEY (marital_status_id) REFERENCES marital_statuses(id),
-    FOREIGN KEY (language_id) REFERENCES languages(id)
+    language_id INT
 );
 
 -- Создаем таблицу связей клиентов и адресов
 CREATE TABLE customer_addresses (
     customer_id INT NOT NULL,
-    address_id INT NOT NULL,
-    PRIMARY KEY (customer_id, address_id),
-    FOREIGN KEY (customer_id) REFERENCES customers(id),
-    FOREIGN KEY (address_id) REFERENCES addresses(id)
+    address_id INT NOT NULL
 );
 
 -- Перенос данных из init_customers в новые таблицы
@@ -186,3 +170,16 @@ SELECT c.id, a.id FROM (
 ) ic
 JOIN customers c ON ic.first_name = c.first_name AND ic.last_name = c.last_name
 JOIN addresses a ON ic.postal_code = a.postal_code;
+
+ALTER TABLE init_customers ENGINE=ndbcluster;
+
+ALTER TABLE titles ENGINE=ndbcluster;
+ALTER TABLE genders ENGINE=ndbcluster;
+ALTER TABLE languages ENGINE=ndbcluster;
+ALTER TABLE marital_statuses ENGINE=ndbcluster;
+ALTER TABLE countries ENGINE=ndbcluster;
+ALTER TABLE cities ENGINE=ndbcluster;
+ALTER TABLE streets ENGINE=ndbcluster;
+ALTER TABLE addresses ENGINE=ndbcluster;
+ALTER TABLE customers ENGINE=ndbcluster;
+ALTER TABLE customer_addresses ENGINE=ndbcluster;

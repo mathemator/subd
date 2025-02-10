@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  management-node-1:
+    image: container-registry.oracle.com/mysql/community-cluster:8.0.35
+    volumes:
+       - ./config/my.cnf:/etc/my.cnf
+       - ./config/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    command: ndb_mgmd
+    restart: unless-stopped
+    networks:
+      ndb-cluster-network:
+        ipv4_address: 172.28.0.2
+
+  ndb-node-1:
+    image: container-registry.oracle.com/mysql/community-cluster:8.0.35
+    volumes:
+       - ./config/my.cnf:/etc/my.cnf
+       - ./config/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    command: ndbmtd
+    restart: unless-stopped    
+    depends_on:
+      - "management-node-1"
+    networks:
+      ndb-cluster-network:
+        ipv4_address: 172.28.0.3
+
+  ndb-node-2:
+    image: container-registry.oracle.com/mysql/community-cluster:8.0.35
+    volumes:
+       - ./config/my.cnf:/etc/my.cnf
+       - ./config/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    command: ndbmtd
+    restart: unless-stopped    
+    depends_on:
+      - "management-node-1"
+    networks:
+      ndb-cluster-network:
+        ipv4_address: 172.28.0.4
+
+  mysql-node-1:
+    image: container-registry.oracle.com/mysql/community-cluster:8.0.35
+    ports:
+      - "3306:3306"
+    volumes:
+       - ./config/my.cnf:/etc/my.cnf
+       - ./config/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+       - ./scripts/init_data:/docker-entrypoint-initdb.d
+       - ./scripts/load:/var/lib/mysql-files
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    command: mysqld
+    depends_on:
+      - "management-node-1"
+      - "ndb-node-1"
+      - "ndb-node-2"
+    networks:
+      ndb-cluster-network:
+        ipv4_address: 172.28.0.10
+
+networks:
+ ndb-cluster-network:
+  driver: bridge
+  ipam:
+   config:
+    - subnet: 172.28.0.0/16
+      gateway: 172.28.5.254

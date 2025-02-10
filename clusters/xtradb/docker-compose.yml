@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  pxc-node1:
+    image: percona/percona-xtradb-cluster:8.0
+    container_name: pxc-node1
+    healthcheck:
+#      небольшая подкрутка времени для надежности на старт первой ноды, иначе флакует
+#      в целом надёжнее всего запускать по отдельности с первой ноды, а это сделано ради "одной кнопки"
+      test: >
+        sleep 20 && mysql -h localhost -u root -ptest1234! -e "SELECT 1 FROM people.titles;" || exit 1
+      interval: 5s
+      start_period: 20s
+      timeout: 25s
+      retries: 10
+    ports:
+      - "3306:3306"
+    networks:
+      pxc-network:
+        ipv4_address: 10.0.2.10
+    environment:
+      MYSQL_ROOT_PASSWORD: test1234!
+      CLUSTER_NAME: pxc-cluster1
+      CLUSTER_INIT: "YES"
+      BOOTSTRAP: "YES"
+    volumes:
+      - ./cert:/cert
+      - ./config:/etc/percona-xtradb-cluster.conf.d
+      - ./init_data/node1:/docker-entrypoint-initdb.d
+      - ./scripts/load:/var/lib/mysql-files
+
+  pxc-node2:
+    image: percona/percona-xtradb-cluster:8.0
+    container_name: pxc-node2
+    networks:
+      pxc-network:
+        ipv4_address: 10.0.2.11
+    environment:
+      MYSQL_ROOT_PASSWORD: test1234!
+      CLUSTER_NAME: pxc-cluster1
+      CLUSTER_JOIN: pxc-node1
+    volumes:
+      - ./cert:/cert
+      - ./config:/etc/percona-xtradb-cluster.conf.d
+    depends_on:
+      pxc-node1:
+        condition: service_healthy
+
+  pxc-node3:
+    image: percona/percona-xtradb-cluster:8.0
+    container_name: pxc-node3
+    networks:
+      pxc-network:
+        ipv4_address: 10.0.2.12
+    environment:
+      MYSQL_ROOT_PASSWORD: test1234!
+      CLUSTER_NAME: pxc-cluster1
+      CLUSTER_JOIN: pxc-node1
+    volumes:
+      - ./cert:/cert
+      - ./config:/etc/percona-xtradb-cluster.conf.d
+    depends_on:
+      pxc-node1:
+        condition: service_healthy
+
+  proxysql:
+    image: proxysql/proxysql
+    container_name: proxysql
+    networks:
+      pxc-network:
+        ipv4_address: 10.0.2.20
+    volumes:
+      - ./init_data/proxysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "6033:6033"
+      - "6032:6032"
+    entrypoint: >
+      sh -c "
+      /usr/bin/proxysql --initial &
+      sleep 10 &&
+      mysql -u admin -padmin -h 127.0.0.1 -P 6032 < /docker-entrypoint-initdb.d/init.sql &&
+      tail -f /dev/null
+      "
+    depends_on:
+      pxc-node3:
+        condition: service_started
+
+networks:
+  pxc-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.2.0/24

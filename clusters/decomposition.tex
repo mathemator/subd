@@ -1,0 +1,130 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\geometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
+
+\title{Декомпозиция и нормализация данных на примере учебного файла}
+
+\author{Александр Гоппе}
+
+\date{\today}
+
+\begin{document}
+
+    \maketitle
+
+    \section{Исходная структура данных}
+
+    Исходные данные представлены в плоской структуре, где атрибуты клиента и его адреса объединены в одной таблице:
+
+    \begin{center}
+        \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+            \hline
+            title & first\_name & last\_name & language & birth\_date & gender & marital\_status & country & postal\_code & region & city & street & building \\
+            \hline
+            Dr. & Danilo & Ambrosini & IT & 1900-01-01 & Unknown & "" & IT & 21100 & "" & Varese & Via Dolomiti & 13 \\
+            Mrs & Deborah & Thomas & EN & "" & Female & "" & GB & RH16 3TQ & "" & Haywards Heath & Cobbetts Mead & 31 \\
+            \hline
+        \end{tabular}%
+        }
+    \end{center}
+
+    \section{Проблемы исходной структуры}
+
+    \begin{itemize}
+        \item Отсутствие типизации (все данные хранятся как строки).
+        \item Отсутствие нормализации (данные о клиенте и адресе объединены).
+        \item Повторяющиеся данные (страны, города, улицы, языки, пол).
+        \item Затрудненная модификация и поддержка (например, изменение названия города потребует обновления всех записей).
+    \end{itemize}
+
+    \section{Нормализация и конечная модель данных}
+
+    В результате декомпозиции были выделены следующие сущности:
+
+    \begin{itemize}
+        \item \textbf{customers} (id, title\_id, first\_name, last\_name, birth\_date, gender\_id, marital\_status\_id, language\_id)
+        \item \textbf{titles} (id, name)
+        \item \textbf{genders} (id, name)
+        \item \textbf{languages} (id, name)
+        \item \textbf{marital\_statuses} (id, name)
+        \item \textbf{countries} (id, name, code)
+        \item \textbf{cities} (id, name, region\_id, country\_id)
+        \item \textbf{regions} (id, name, country\_id)
+        \item \textbf{streets} (id, name, city\_id)
+        \item \textbf{addresses} (id, postal\_code, street\_id, building\_number)
+        \item \textbf{customer\_addresses} (customer\_id, address\_id)
+    \end{itemize}
+
+
+    \subsection{Диаграмма конечной структуры}
+    \begin{center}
+        \resizebox{\textwidth}{!}{%
+        \begin{tikzpicture}[node distance=1.5cm, every node/.style={draw, minimum width=3cm, align=center}]
+            \node (customers) {customers};
+            \node (titles) [above left=of customers] {titles};
+            \node (genders) [left=of customers] {genders};
+            \node (languages) [above right=of customers] {languages};
+            \node (marital) [right=of customers] {marital\_statuses};
+            \node (addresses) [below=of customers] {addresses};
+            \node (customer_addresses) [below=of addresses] {customer\_addresses};
+            \node (countries) [below right=of addresses] {countries};
+            \node (regions) [above right=of countries] {regions};
+            \node (cities) [above=of regions] {cities};
+            \node (streets) [above=of countries] {streets};
+
+            \draw[->] (customers) -- (titles);
+            \draw[->] (customers) -- (genders);
+            \draw[->] (customers) -- (languages);
+            \draw[->] (customers) -- (marital);
+            \draw[->] (customers) -- (customer_addresses);
+            \draw[->] (customer_addresses) -- (addresses);
+            \draw[->] (addresses) -- (streets);
+            \draw[->] (streets) -- (cities);
+            \draw[->] (cities) -- (regions);
+            \draw[->] (cities) -- (countries);
+            \draw[->] (regions) -- (countries);
+        \end{tikzpicture}%
+        }
+    \end{center}
+
+    \section{Первичная проверка корректности переноса}
+
+
+    \begin{center}
+        \resizebox{\textwidth}{!}{%
+            \begin{tabular}{|l|c|c|}
+                \hline
+                Запрос & версия & результат \\
+                \hline
+                select count(distinct first\_name, last\_name) from init\_customers where first\_name <> '' or last\_name <> '' & старая & 1122 \\
+                \hline
+                select count(distinct first\_name, last\_name) from customers & новая  & 1122 \\
+                \hline
+                select count(distinct postal\_code) from init\_customers & старая  & 1079 \\
+                \hline
+                select count(distinct postal\_code) from addresses & новая  & 1079 \\
+                \hline
+            \end{tabular}%
+        }
+    \end{center}
+
+
+    \section{Заключение}
+
+    Благодаря нормализации удалось:
+    \begin{itemize}
+        \item Устранить избыточность данных.
+        \item Обеспечить целостность и удобство обновления.
+        \item Улучшить читаемость структуры и её расширяемость.
+    \end{itemize}
+
+\end{document}

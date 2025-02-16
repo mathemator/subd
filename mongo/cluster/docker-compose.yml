@@ -1,0 +1,63 @@
+version: "3.8"
+services:
+  # Конфигурационные сервера
+  configsvr1:
+    image: mongo:6
+    command: mongod --configsvr --replSet configReplSet --bind_ip_all --port 27017
+    ports:
+      - "27017:27017"
+
+  configsvr2:
+    image: mongo:6
+    command: mongod --configsvr --replSet configReplSet --bind_ip_all --port 27017
+
+  configsvr3:
+    image: mongo:6
+    command: mongod --configsvr --replSet configReplSet --bind_ip_all --port 27017
+
+  # Первый шард (реплика)
+  shard1-node1:
+    image: mongo:6
+    command: mongod --shardsvr --replSet shard1ReplSet --bind_ip_all --port 27018
+    ports:
+      - "27018:27018"
+
+  shard1-node2:
+    image: mongo:6
+    command: mongod --shardsvr --replSet shard1ReplSet --bind_ip_all --port 27018
+
+  shard1-node3:
+    image: mongo:6
+    command: mongod --shardsvr --replSet shard1ReplSet --bind_ip_all --port 27018
+
+  # Второй шард (реплика)
+  shard2-node1:
+    image: mongo:6
+    command: mongod --shardsvr --replSet shard2ReplSet --bind_ip_all --port 27019
+    ports:
+      - "27019:27019"
+
+  shard2-node2:
+    image: mongo:6
+    command: mongod --shardsvr --replSet shard2ReplSet --bind_ip_all --port 27019
+
+  shard2-node3:
+    image: mongo:6
+    command: mongod --shardsvr --replSet shard2ReplSet --bind_ip_all --port 27019
+
+  # Mongos (маршрутизатор)
+  mongos:
+    image: mongo:6
+    command: mongos --configdb configReplSet/configsvr1:27017,configsvr2:27017,configsvr3:27017 --bind_ip_all --port 27020
+    ports:
+      - "27020:27020"
+    depends_on:
+      - configsvr1
+      - configsvr2
+      - configsvr3
+      - shard1-node1
+      - shard1-node2
+      - shard1-node3
+      - shard2-node1
+      - shard2-node2
+      - shard2-node3

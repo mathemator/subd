@@ -14,18 +14,11 @@ CREATE TABLE category (
     name TEXT UNIQUE NOT NULL
 );
 
-CREATE TABLE supplier (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    contact_info TEXT
-);
-
 CREATE TABLE product (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     description TEXT,
     category_id INT NOT NULL REFERENCES category(id),
-    supplier_id INT NOT NULL REFERENCES supplier(id),
     price NUMERIC(10,2) NOT NULL CHECK (price >= 0),
     characteristics JSONB NOT NULL DEFAULT '{}'
 );
@@ -41,6 +34,12 @@ CREATE TABLE inventory (
     product_id INT NOT NULL REFERENCES product(id),
     quantity INT NOT NULL CHECK (quantity >= 0),
     PRIMARY KEY (shop_id, product_id)
+);
+
+CREATE TABLE supplier (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    contact_info TEXT
 );
 
 CREATE TABLE customer (

@@ -1,11 +1,5 @@
 sysbench 1.0.17 (using bundled LuaJIT 2.1.0-beta2)
 
 Creating table 'sbtest1'...
-FATAL: mysql_drv_query() returned error 1050 (Table 'sbtest1' already exists) for query 'CREATE TABLE sbtest1(
-  id INTEGER NOT NULL AUTO_INCREMENT,
-  k INTEGER DEFAULT '0' NOT NULL,
-  c CHAR(120) DEFAULT '' NOT NULL,
-  pad CHAR(60) DEFAULT '' NOT NULL,
-  PRIMARY KEY (id)
-) /*! ENGINE = innodb */ '
-FATAL: `sysbench.cmdline.call_command' function failed: /usr/share/sysbench/oltp_common.lua:197: SQL error, errno = 1050, state = '42S01': Table 'sbtest1' already exists
+Inserting 10000 records into 'sbtest1'
+Creating a secondary index on 'sbtest1'...

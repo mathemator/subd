@@ -13,11 +13,11 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 ENABLE_SSL = False
 
 # The superuser credentials
-ADMIN_USERNAME = os.environ.get('SUPERSET_ADMIN_USERNAME', 'admin')
-ADMIN_PASSWORD = os.environ.get('SUPERSET_ADMIN_PASSWORD', 'admin')
-ADMIN_FIRST_NAME = os.environ.get('SUPERSET_ADMIN_FIRST_NAME', 'Admin')
-ADMIN_LAST_NAME = os.environ.get('SUPERSET_ADMIN_LAST_NAME', 'User')
-ADMIN_EMAIL = os.environ.get('SUPERSET_ADMIN_EMAIL', 'admin@superset.com')
+ADMIN_USERNAME = os.environ.get('SUPERSET_ADMIN_USERNAME', 'superset')
+ADMIN_PASSWORD = os.environ.get('SUPERSET_ADMIN_PASSWORD', 'superset')
+ADMIN_FIRST_NAME = os.environ.get('SUPERSET_ADMIN_FIRST_NAME', 'Aleksandr')
+ADMIN_LAST_NAME = os.environ.get('SUPERSET_ADMIN_LAST_NAME', 'Goppe')
+ADMIN_EMAIL = os.environ.get('SUPERSET_ADMIN_EMAIL', 'mathemator@yandex.ru')
 AUTH_TYPE = 1
 WTF_CSRF_ENABLED = False
 ENABLE_PROXY_FIX = True

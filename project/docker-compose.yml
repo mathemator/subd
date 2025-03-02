@@ -109,11 +109,11 @@ services:
       - "8089:8089"
     environment:
       SUPERSET_CONFIG_PATH: /etc/superset_config.py
-      SUPERSET_ADMIN_USERNAME: superset
-      SUPERSET_ADMIN_PASSWORD: superset
-      SUPERSET_ADMIN_FIRST_NAME: Aleksandr
-      SUPERSET_ADMIN_LAST_NAME: Goppe
-      SUPERSET_ADMIN_EMAIL: mathemator@yandex.ru
+      SUPERSET_ADMIN_USERNAME: admin
+      SUPERSET_ADMIN_PASSWORD: admin
+      SUPERSET_ADMIN_FIRST_NAME: Admin
+      SUPERSET_ADMIN_LAST_NAME: User
+      SUPERSET_ADMIN_EMAIL: admin@superset.com
     volumes:
       - ./superset/superset_config.py:/etc/superset_config.py
       - ./superset/dashboards:/app/dashboard_archive
@@ -125,7 +125,7 @@ services:
       /bin/bash -c "pip install psycopg2-binary && 
         superset db upgrade &&
         superset init &&
-        superset fab create-admin --username superset --firstname Aleksandr --lastname Goppe --email mathemator@yandex.ru --password superset &&
+        superset fab create-admin --username admin --firstname Superset --lastname Admin --email admin@admin.com --password admin &&
         superset run -p 8089 --with-threads --reload --host 0.0.0.0 &
           until curl -s -o /dev/null -w '%{http_code}' http://localhost:8089 | grep -qE '200|302'; do
             echo 'Waiting for Superset to start...';
@@ -211,10 +211,6 @@ services:
     image: grafana/grafana
     container_name: grafana
     restart: always
-    environment:
-      - GF_SECURITY_ADMIN_USER=grafana
-      - GF_SECURITY_ADMIN_PASSWORD=grafana
-      - GF_SECURITY_DISABLE_INITIAL_ADMIN_PASSWORD_HINT=true
     ports:
       - "3000:3000"
     volumes:
@@ -234,7 +230,6 @@ services:
       - "9000:9000"  # Native TCP интерфейс для клиентов
     volumes:
       - clickhouse_data:/var/lib/clickhouse
-      - ./clickhouse/init-clickhouse.sql:/docker-entrypoint-initdb.d/init-clickhouse.sql
     environment:
       - CLICKHOUSE_USER=admin
       - CLICKHOUSE_PASSWORD=admin
@@ -257,34 +252,6 @@ services:
       - patroni
     depends_on:
       - clickhouse
-
-  lapland-server-app:
-    image: lapland-server-app:0.1
-    hostname: lapland-server-app
-    container_name: lapland-server-app
-    environment:
-      - LOGSTASH_HOST=logstash
-      - LOGSTASH_PORT=9601
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://haproxy:5000/lapland?currentSchema=business
-    ports:
-      - "8080:8080"
-    networks:
-      - patroni
-    depends_on:
-      clickhouse:
-        condition: service_started
-
-  lapland-client-app:
-    image: lapland-client-app:0.1
-    hostname: lapland-client-app
-    container_name: lapland-client-app
-    ports:
-      - "5173:80"
-    networks:
-      - patroni
-    depends_on:
-      lapland-server-app:
-        condition: service_started
 
   curl_runner:
     image: curlimages/curl:latest

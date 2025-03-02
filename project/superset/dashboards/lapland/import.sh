@@ -2,8 +2,8 @@
 
 # Настройки Superset
 SUPERSET_HOST="http://superset:8089"  # Адрес Superset (замени, если нужно)
-SUPERSET_USER="superset"  # Логин
-SUPERSET_PASSWORD="superset"  # Пароль
+SUPERSET_USER="admin"  # Логин
+SUPERSET_PASSWORD="admin"  # Пароль
 
 # Получение токена аутентификации
 TOKEN_RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \

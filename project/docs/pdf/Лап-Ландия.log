@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.8)  26 FEB 2025 14:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.8)  25 FEB 2025 09:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -871,27 +871,27 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 (D:/Projects/subd/project/docs/pdf/Лап-Ландия.aux)
 \openout1 = `Лап-Ландия.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for T2A/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Info: Redefining \th on input line 23.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T2A/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Info: Redefining \th on input line 22.
 
 (d:/Programs/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -949,28 +949,28 @@ e
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \c@lstlisting=\count335
-Package hyperref Info: Link coloring OFF on input line 23.
+Package hyperref Info: Link coloring OFF on input line 22.
 (D:/Projects/subd/project/docs/pdf/Лап-Ландия.out)
 (D:/Projects/subd/project/docs/pdf/Лап-Ландия.out)
 \@outlinefile=\write4
 \openout4 = `Лап-Ландия.out'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 26.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 25.
 
 
 (d:/Programs/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 26.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 25.
 
 
 (d:/Programs/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<title.jpg, id=143, 1027.84pt x 1027.84pt>
-File: title.jpg Graphic file (type jpg)
-<use title.jpg>
-Package pdftex.def Info: title.jpg  used on input line 28.
+<title_good.jpg, id=103, 1027.84pt x 1027.84pt>
+File: title_good.jpg Graphic file (type jpg)
+<use title_good.jpg>
+Package pdftex.def Info: title_good.jpg  used on input line 27.
 (pdftex.def)             Requested size: 338.58632pt x 338.59227pt.
 
 
@@ -978,160 +978,133 @@ Package pdftex.def Info: title.jpg  used on input line 28.
 
 {d:/Programs/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{d:/Prog
 rams/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t2a.enc} <./titl
-e.jpg>] (D:/Projects/subd/project/docs/pdf/Лап-Ландия.toc)
+e_good.jpg>] (D:/Projects/subd/project/docs/pdf/Лап-Ландия.toc)
 \tf@toc=\write5
 \openout5 = `Лап-Ландия.toc'.
 
 
 
-[2] (./chapters/1-описание-проекта.tex
+[2]
 
 [3{d:/Programs/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.en
 c}]
 
-./chapters/1-описание-проекта.tex:73: Package tikz Error: Giving
- up on this path. Did you forget a semicolon?.
-
-See the tikz package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.73     }
-          
-This error message was generated by an \errmessage
-command, so I can't give any explicit help.
-Pretend that you're Hercule Poirot: Examine all clues,
-and deduce the truth by order and method.
-
-)
-(./chapters/2-структура-и-элементы-хранилища-дан�
-�ых.tex
-
 [4]
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:54: Missing \endcsname inserted.
+./Лап-Ландия.tex:172: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.54     \normalsize
-                    
+l.172         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:54: Missing \endcsname inserted.
+./Лап-Ландия.tex:172: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.54     \normalsize
-                    
+l.172         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:54: LaTeX Error: Environment \normalsize  undefined.
+./Лап-Ландия.tex:172: LaTeX Error: Environment \normalsize  undefined.
+
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.54     \normalsize
-                    
+l.172         \normalsize
+                         
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Runaway argument?
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:66: Paragraph ended before \end  was complete.
+./Лап-Ландия.tex:184: Paragraph ended before \end  was complete.
 <to be read again> 
                    \par 
-l.66 
-     
+l.184 
+      
 I suspect you've forgotten a `}', causing me to apply this
 control sequence to too much text. How can we recover?
 My plan is to forget the whole thing and hope for the best.
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:70: Missing \endcsname inserted.
+./Лап-Ландия.tex:188: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.70     \normalsize
-                    
+l.188         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:70: Missing \endcsname inserted.
+./Лап-Ландия.tex:188: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.70     \normalsize
-                    
+l.188         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:70: LaTeX Error: Environment \normalsize  undefined.
+./Лап-Ландия.tex:188: LaTeX Error: Environment \normalsize  undefined.
+
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.70     \normalsize
-                    
+l.188         \normalsize
+                         
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Runaway argument?
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:90: Paragraph ended before \end  was complete.
+./Лап-Ландия.tex:208: Paragraph ended before \end  was complete.
 <to be read again> 
                    \par 
-l.90 
-     
+l.208 
+      
 I suspect you've forgotten a `}', causing me to apply this
 control sequence to too much text. How can we recover?
 My plan is to forget the whole thing and hope for the best.
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:94: Missing \endcsname inserted.
+./Лап-Ландия.tex:212: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.94     \normalsize
-                    
+l.212         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:94: Missing \endcsname inserted.
+./Лап-Ландия.tex:212: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.94     \normalsize
-                    
+l.212         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:94: LaTeX Error: Environment \normalsize  undefined.
+./Лап-Ландия.tex:212: LaTeX Error: Environment \normalsize  undefined.
+
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.94     \normalsize
-                    
+l.212         \normalsize
+                         
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Runaway argument?
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:108: Paragraph ended before \end  was complete.
+./Лап-Ландия.tex:226: Paragraph ended before \end  was complete.
 <to be read again> 
                    \par 
-l.108 
+l.226 
       
 I suspect you've forgotten a `}', causing me to apply this
 control sequence to too much text. How can we recover?
@@ -1140,226 +1113,277 @@ My plan is to forget the whole thing and hope for the best.
 
 
 [5]
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:112: Missing \endcsname inserted.
+./Лап-Ландия.tex:230: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.112     \normalsize
-                     
+l.230         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:112: Missing \endcsname inserted.
+./Лап-Ландия.tex:230: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.112     \normalsize
-                     
+l.230         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:112: LaTeX Error: Environment \normalsize  undefined.
+./Лап-Ландия.tex:230: LaTeX Error: Environment \normalsize  undefined.
+
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.112     \normalsize
-                     
+l.230         \normalsize
+                         
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Runaway argument?
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:126: Paragraph ended before \end  was complete.
+./Лап-Ландия.tex:244: Paragraph ended before \end  was complete.
 <to be read again> 
                    \par 
-l.126 
+l.244 
       
 I suspect you've forgotten a `}', causing me to apply this
 control sequence to too much text. How can we recover?
 My plan is to forget the whole thing and hope for the best.
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:130: Missing \endcsname inserted.
+./Лап-Ландия.tex:248: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.130     \normalsize
-                     
+l.248         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:130: Missing \endcsname inserted.
+./Лап-Ландия.tex:248: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.130     \normalsize
-                     
+l.248         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:130: LaTeX Error: Environment \normalsize  undefined.
+./Лап-Ландия.tex:248: LaTeX Error: Environment \normalsize  undefined.
+
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.130     \normalsize
-                     
+l.248         \normalsize
+                         
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Runaway argument?
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:144: Paragraph ended before \end  was complete.
+./Лап-Ландия.tex:262: Paragraph ended before \end  was complete.
 <to be read again> 
                    \par 
-l.144 
+l.262 
       
 I suspect you've forgotten a `}', causing me to apply this
 control sequence to too much text. How can we recover?
 My plan is to forget the whole thing and hope for the best.
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:148: Missing \endcsname inserted.
+./Лап-Ландия.tex:266: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.148     \normalsize
-                     
+l.266         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:148: Missing \endcsname inserted.
+./Лап-Ландия.tex:266: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.148     \normalsize
-                     
+l.266         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:148: LaTeX Error: Environment \normalsize  undefined.
+./Лап-Ландия.tex:266: LaTeX Error: Environment \normalsize  undefined.
+
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.148     \normalsize
-                     
+l.266         \normalsize
+                         
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-Runaway argument?
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:169: Paragraph ended before \end  was complete.
+./Лап-Ландия.tex:286: Missing \endcsname inserted.
 <to be read again> 
-                   \par 
-l.169 
-      
-I suspect you've forgotten a `}', causing me to apply this
-control sequence to too much text. How can we recover?
-My plan is to forget the whole thing and hope for the best.
-
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:176: Missing \endcsname inserted.
-<to be read again> 
-                   \protect 
-l.176     \normalsize
-                     
-The control sequence marked <to be read again> should
-not appear between \csname and \endcsname.
-
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:176: Missing \endcsname inserted.
-<to be read again> 
-                   \protect 
-l.176     \normalsize
-                     
+                   \def 
+l.286     �
+           �есмотря на предполагаемую валидац�...
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:176: LaTeX Error: Environment \normalsize  undefined.
+./Лап-Ландия.tex:286: LaTeX Error: \begin{document} ended by \end{�}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.176     \normalsize
-                     
+l.286     �
+           �есмотря на предполагаемую валидац�...
+
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-Runaway argument?
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:195: Paragraph ended before \end  was complete.
+
+./Лап-Ландия.tex:286: LaTeX Error: Invalid UTF-8 byte "9D.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.286     Н
+            есмотря на предполагаемую валидац�...
+
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+Overfull \hbox (14.48819pt too wide) in paragraph at lines 268--288
+[] \T2A/cmr/m/n/12 �����-�� �� ����-
+ []
+
+./Лап-Ландия.tex:292: Missing \endcsname inserted.
 <to be read again> 
-                   \par 
-l.195 
-      
-I suspect you've forgotten a `}', causing me to apply this
-control sequence to too much text. How can we recover?
-My plan is to forget the whole thing and hope for the best.
+                   \protect 
+l.292         \normalsize
+                         
+The control sequence marked <to be read again> should
+not appear between \csname and \endcsname.
+
+./Лап-Ландия.tex:292: Missing \endcsname inserted.
+<to be read again> 
+                   \protect 
+l.292         \normalsize
+                         
+The control sequence marked <to be read again> should
+not appear between \csname and \endcsname.
+
+
+./Лап-Ландия.tex:292: LaTeX Error: Environment \normalsize  undefined.
+
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.292         \normalsize
+                         
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+./Лап-Ландия.tex:310: Missing \endcsname inserted.
+<to be read again> 
+                   \def 
+l.310     �
+           �спользуем BIGSERIAL для подстраховки о�...
+The control sequence marked <to be read again> should
+not appear between \csname and \endcsname.
+
+
+./Лап-Ландия.tex:310: LaTeX Error: \begin{document} ended by \end{�}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.310     �
+           �спользуем BIGSERIAL для подстраховки о�...
+
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+./Лап-Ландия.tex:310: LaTeX Error: Invalid UTF-8 byte "98.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.310     И
+            спользуем BIGSERIAL для подстраховки о�...
+
+The document does not appear to be in UTF-8 encoding.
+Try adding \UseRawInputEncoding as the first line of the file
+or specify an encoding such as \usepackage [latin1]{inputenc}
+in the document preamble.
+Alternatively, save the file in UTF-8 using your editor or another tool
+
+
+Overfull \hbox (47.01558pt too wide) in paragraph at lines 294--311
+[] \T2A/cmr/m/n/12 �����-��-�� BIGSERIAL
+ []
 
 
 
 [6]
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:201: Missing \endcsname inserted.
+./Лап-Ландия.tex:315: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.201     \normalsize
-                     
+l.315         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:201: Missing \endcsname inserted.
+./Лап-Ландия.tex:315: Missing \endcsname inserted.
 <to be read again> 
                    \protect 
-l.201     \normalsize
-                     
+l.315         \normalsize
+                         
 The control sequence marked <to be read again> should
 not appear between \csname and \endcsname.
 
 
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:201: LaTeX Error: Environment \normalsize  undefined.
+./Лап-Ландия.tex:315: LaTeX Error: Environment \normalsize  undefined.
+
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.201     \normalsize
-                     
+l.315         \normalsize
+                         
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 Runaway argument?
-./chapters/2-структура-и-элементы-хранилища-данн
-ых.tex:215: Paragraph ended before \end  was complete.
+./Лап-Ландия.tex:329: Paragraph ended before \end  was complete.
 <to be read again> 
                    \par 
-l.215 
+l.329 
       
 I suspect you've forgotten a `}', causing me to apply this
 control sequence to too much text. How can we recover?
 My plan is to forget the whole thing and hope for the best.
 
 LaTeX Font Info:    Trying to load font information for T2A+cmtt on input line 
-247.
+360.
 (d:/Programs/texlive/2024/texmf-dist/tex/latex/cyrillic/t2acmtt.fd
 File: t2acmtt.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
 )
@@ -1368,127 +1392,49 @@ File: t2acmtt.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
 File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
 LaTeX Font Info:    Font shape `T2A/cmtt/bx/n' in size <12> not available
-(Font)              Font shape `T2A/cmtt/m/n' tried instead on input line 308.
-)
-(./chapters/3-кластер-patroni-и-настройки-узлов-бд.tex
-
-[8] (d:/Programs/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/09/23 1.10c listings language file
-)
-(d:/Programs/texlive/2024/texmf-dist/tex/latex/listings/lstlang2.sty
-File: lstlang2.sty 2024/09/23 1.10c listings language file
-)
-(d:/Programs/texlive/2024/texmf-dist/tex/latex/listings/lstlang3.sty
-File: lstlang3.sty 2024/09/23 1.10c listings language file
-)
-
-./chapters/3-кластер-patroni-и-настройки-узлов-бд.tex:9
-: Package Listings Error: Couldn't load requested language.
-
-See the Listings package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.9 ...y, breaklines=true,label={lst:patroniyaml}]
-                                                  
-The following languages weren't loadable:
-    ,yaml$
-This may cause errors in the sequel.
+(Font)              Font shape `T2A/cmtt/m/n' tried instead on input line 418.
 
 
-./chapters/3-кластер-patroni-и-настройки-узлов-бд.tex:9
-: Package Listings Error: language yaml undefined.
+[8]
 
-See the Listings package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.9 ...y, breaklines=true,label={lst:patroniyaml}]
-                                                  
-The language is not loadable. Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-(d:/Programs/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/09/23 1.10c listings language file
-)
-(d:/Programs/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/09/23 1.10c listings language file
-))
-(./chapters/4-мониторинг.tex
-
-[9]
-Overfull \hbox (18.27272pt too wide) in paragraph at lines 7--8
-[]\T2A/cmr/bx/n/12 Prometheus \T2A/cmr/m/n/12 - ��-����-��-�� ����-��-�� ���-��
-�, ��-��-��-�-��-��-�� �� http � postgres_exporter. 
- []
-
-<grafana.png, id=253, 1129.97156pt x 598.48593pt>
-File: grafana.png Graphic file (type png)
-<use grafana.png>
-Package pdftex.def Info: grafana.png  used on input line 17.
-(pdftex.def)             Requested size: 435.32422pt x 230.55934pt.
-) (./chapters/5-бизнес-аналитика.tex
-Overfull \hbox (1.91924pt too wide) in paragraph at lines 7--10
-[]\T2A/cmr/m/n/12 ������������� ����-���-��� ��-�� (��-��-��� �� ����-��-��� ��
--��-��-�� �����-��-��� sqlite3,
- []
-
-
-
-[10 <./grafana.png>]
-<superset.png, id=260, 931.22906pt x 462.22687pt>
-File: superset.png Graphic file (type png)
-<use superset.png>
-Package pdftex.def Info: superset.png  used on input line 34.
-(pdftex.def)             Requested size: 435.32422pt x 216.07585pt.
-)
-
-[11 <./superset.png>]
-(D:/Projects/subd/project/docs/pdf/Лап-Ландия.aux)
+[9] (D:/Projects/subd/project/docs/pdf/Лап-Ландия.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `Лап-Ландия.out' has not changed.
-(rerunfilecheck)             Checksum: 43B144C068CAF041C71AE32EF0B501F4;7458.
+(rerunfilecheck)             Checksum: FD6C206DC86043730AC59DEBC9966DF7;4898.
  )
-(\end occurred inside a group at level 8)
+(\end occurred inside a group at level 6)
 
-### semi simple group (level 8) entered at line 201 (\begingroup)
-### semi simple group (level 7) entered at line 176 (\begingroup)
-### semi simple group (level 6) entered at line 148 (\begingroup)
-### semi simple group (level 5) entered at line 130 (\begingroup)
-### semi simple group (level 4) entered at line 112 (\begingroup)
-### semi simple group (level 3) entered at line 94 (\begingroup)
-### semi simple group (level 2) entered at line 70 (\begingroup)
-### semi simple group (level 1) entered at line 54 (\begingroup)
+### semi simple group (level 6) entered at line 315 (\begingroup)
+### semi simple group (level 5) entered at line 248 (\begingroup)
+### semi simple group (level 4) entered at line 230 (\begingroup)
+### semi simple group (level 3) entered at line 212 (\begingroup)
+### semi simple group (level 2) entered at line 188 (\begingroup)
+### semi simple group (level 1) entered at line 172 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 25333 strings out of 473201
- 454361 string characters out of 5715611
- 1071263 words of memory out of 5000000
- 48098 multiletter control sequences out of 15000+600000
- 572716 words of font info for 75 fonts, out of 8000000 for 9000
+ 25059 strings out of 473201
+ 448344 string characters out of 5715611
+ 1021090 words of memory out of 5000000
+ 47886 multiletter control sequences out of 15000+600000
+ 572406 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,10n,91p,450b,1787s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,10n,91p,450b,1689s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <d:/Programs/texlive/2024/texmf-dist/fonts/type1/public/cm-supe
 r/sfbx1200.pfb><d:/Programs/texlive/2024/texmf-dist/fonts/type1/public/cm-super
 /sfbx1440.pfb><d:/Programs/texlive/2024/texmf-dist/fonts/type1/public/cm-super/
 sfbx1728.pfb><d:/Programs/texlive/2024/texmf-dist/fonts/type1/public/cm-super/s
-fit1200.pfb><d:/Programs/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sf
-rm1200.pfb><d:/Programs/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfr
-m1440.pfb><d:/Programs/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm
-2074.pfb><d:/Programs/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sftt1
-200.pfb>
-Output written on D:/Projects/subd/project/docs/pdf/Лап-Ландия.pdf (11
- pages, 3159376 bytes).
+frm1200.pfb><d:/Programs/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sf
+rm1440.pfb><d:/Programs/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfr
+m2074.pfb><d:/Programs/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sftt
+1200.pfb>
+Output written on D:/Projects/subd/project/docs/pdf/Лап-Ландия.pdf (9 
+pages, 2671720 bytes).
 PDF statistics:
- 326 PDF objects out of 1000 (max. 8388607)
- 287 compressed objects within 3 object streams
- 73 named destinations out of 1000 (max. 500000)
- 300 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 230 PDF objects out of 1000 (max. 8388607)
+ 200 compressed objects within 2 object streams
+ 40 named destinations out of 1000 (max. 500000)
+ 210 words of extra memory for PDF output out of 10000 (max. 10000000)
 

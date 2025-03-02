@@ -1,0 +1,25 @@
+\babel@toc {russian}{}\relax 
+\contentsline {section}{\numberline {1}Описание проекта}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Общая структура}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Диаграмма инфраструктуры}{4}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Структура и элементы хранилища данных}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Схемы}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Схема archive: описание}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Схема business: описание}{5}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Таблица category}{5}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}Таблица product}{5}{subsubsection.2.3.2}%
+\contentsline {subsubsection}{\numberline {2.3.3}Таблица shop}{6}{subsubsection.2.3.3}%
+\contentsline {subsubsection}{\numberline {2.3.4}Таблица inventory}{6}{subsubsection.2.3.4}%
+\contentsline {subsubsection}{\numberline {2.3.5}Таблица supplier}{6}{subsubsection.2.3.5}%
+\contentsline {subsubsection}{\numberline {2.3.6}Таблица customer}{6}{subsubsection.2.3.6}%
+\contentsline {subsubsection}{\numberline {2.3.7}Таблица purchase}{7}{subsubsection.2.3.7}%
+\contentsline {subsubsection}{\numberline {2.3.8}Таблица purchase\_item}{7}{subsubsection.2.3.8}%
+\contentsline {subsubsection}{\numberline {2.3.9}Индексы}{7}{subsubsection.2.3.9}%
+\contentsline {subsection}{\numberline {2.4}Пользовательские типы данных}{7}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Процедуры, функции и задания по расписанию}{8}{subsection.2.5}%
+\contentsline {subsubsection}{\numberline {2.5.1}Процедуры}{8}{subsubsection.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.5.2}Функции}{8}{subsubsection.2.5.2}%
+\contentsline {subsubsection}{\numberline {2.5.3}Задание по расписанию}{8}{subsubsection.2.5.3}%
+\contentsline {subsection}{\numberline {2.6}Схема cron: описание}{8}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Схема migrations: описание}{8}{subsection.2.7}%
+\contentsline {section}{\numberline {3}Кластер Patroni и настройки узлов БД}{9}{section.3}%

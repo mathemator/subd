@@ -304,7 +304,7 @@
     \item \textbf{Задание архивации:} выполняется ежедневно в 04:00.
 \end{itemize}
 
-\begin{lstlisting}[language=SQL, frame=single, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:cronsql}]
+\begin{lstlisting}[language=SQL, frame=single, keepspaces=true, showstringspaces=false, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:cronsql}]
 SELECT cron.schedule('0 4 * * *',
     $$CALL business.archive_old_purchases();$$);
 \end{lstlisting}

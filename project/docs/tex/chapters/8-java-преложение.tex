@@ -35,7 +35,7 @@ Spring-Boot+JPA и Hibernate.
 поле.
 Например, числовой `id`.
 В коде приложения это выглядит как код на HQL:
-\begin{lstlisting}[language=java, frame=single, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:hqlquery}]
+\begin{lstlisting}[language=java, frame=single, keepspaces=true, showstringspaces=false, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:hqlquery}]
     @Query("""
             from Purchase p
               join fetch p.customer c
@@ -48,9 +48,10 @@ Spring-Boot+JPA и Hibernate.
 Заметим, что благодаря использованию join fetch была устранена известная \textbf{N+1} проблема при использовании ORM,
 когда при работе с связанными сущностями производятся дополнительные зопросы к БД для каждой сущности.
 
-Теперь в логе видим:
+Теперь в логе видим, без offset и count:
+\begin{figure}[H]
 \begin{lstlisting}[language=bash, frame=single, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:hiberpagelog}]
 2025-03-02 14:48:54 Hibernate: select p1_0.id,p1_0.customer_id,c1_0.id,c1_0.bonus_points,c1_0.email,c1_0.loyalty_status,c1_0.name,c1_0.phone,p1_0.purchase_date,p1_0.shop_id,p1_0.total_amount from business.purchase p1_0 join business.customer c1_0 on c1_0.id=p1_0.customer_id where p1_0.id>? order by p1_0.id fetch first ? rows only
-\end{lstlisting}
+\end{lstlisting}\label{fig:hibernooffsetlisting}
+\end{figure}
 
-Без offset и count.

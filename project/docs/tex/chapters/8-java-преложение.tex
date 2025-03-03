@@ -12,8 +12,8 @@ Spring-Boot+JPA и Hibernate.
 
 \subsection{Пагинация в контексте работы с БД}\label{subsec:jpapagination}
 
-\subsubsection{Пагинация по умолчанию}\label{subsec:defaultpagination}
-В базовой пагинации, реализованной в Spring Boot Jpa, как и во многих других,
+\subsubsection{Пагинация по умолчанию}\label{subsubsec:defaultpagination}
+В базовой пагинации, реализованной в Spring Boot Jpa, как и во многих других фреймворках,
 в частности, Django в Python - используется извлечение через offset с запросом общего числа данных в таблице.
 Это иллюстрируют записи в логе приложения от Hibernate, при выполнении запроса по продуктам:
 
@@ -29,11 +29,11 @@ Spring-Boot+JPA и Hibernate.
     \item Имеем дополнительный запрос на число записей, который не во всех сценариях ``прокрутки`` нужен клиенту.
 \end{itemize}
 
-\subsubsection{Использование keyset и slice}\label{subsec:slicekeysetpagination}
+\subsubsection{Использование keyset и slice}\label{subsubsec:slicekeysetpagination}
 Можно использовать альтернативный запрос с использованием Slice вместо Page - тогда не будут производиться запросы
 \textbf{count}, а также вместо offset использовать условие на какое-нибудь индексированное, удобное для упорядочивания
 поле.
-Например, числовой id.
+Например, числовой `id`.
 В коде приложения это выглядит как код на HQL:
 \begin{lstlisting}[language=java, frame=single, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:hqlquery}]
     @Query("""

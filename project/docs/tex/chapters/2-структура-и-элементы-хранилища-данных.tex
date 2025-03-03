@@ -1,4 +1,4 @@
-\subsection{Схемы}\label{subsec:-schemas:-}
+\subsection{Схемы}\label{subsec:schemas}
 В базе созданы следующие схемы:
 \begin{itemize}
     \item \textbf{archive}: архивированные данные, для разгрузки оперативной схемы.
@@ -8,12 +8,12 @@
     \item \textbf{public}: общая начальная схема PostgreSQL\@.
 \end{itemize}
 
-\subsection{Схема archive: описание}\label{subsec:-archive:-}
+\subsection{Схема archive: описание}\label{subsec:archive}
 
 Архивируются только данные о покупках, как наиболее тяжёлые и интенсивные.
 Структура и индексы полностью дублируют прототипы из бизнес-схемы.
 
-\subsection{Схема business: описание}\label{subsec:-business:-}
+\subsection{Схема business: описание}\label{subsec:business}
 
 Оперативные бизнес-данные о покупках, магазинах, покупателях.
 
@@ -237,7 +237,7 @@
     }
 \end{center}
 
-\subsection{Пользовательские типы данных}\label{subsec:-usertypes:-}
+\subsection{Пользовательские типы данных}\label{subsec:usertypes}
 
 В данной секции приведены пользовательские типы и домены, используемые в базе данных.
 
@@ -269,7 +269,7 @@
     \end{center}
 \end{itemize}
 
-\subsection{Процедуры, функции и задания по расписанию}\label{subsec:-procedures:-}
+\subsection{Процедуры, функции и задания по расписанию}\label{subsec:procedures}
 
 В данной секции приведены хранимые процедуры, функции и задания, выполняемые в базе данных.
 
@@ -309,12 +309,12 @@ SELECT cron.schedule('0 4 * * *',
     $$CALL business.archive_old_purchases();$$);
 \end{lstlisting}
 
-\subsection{Схема cron: описание}\label{subsec:-crondesc:-}
+\subsection{Схема cron: описание}\label{subsec:crondesc}
 
 Данная схема создана подключенным в ходе инициализации БД расширением pg\_cron и содержит технические таблицы
-job и job\_run\_details с информацией о заданиях.
+`job` и `job\_run\_details` с информацией о заданиях.
 
-\subsection{Схема migrations: описание}\label{subsec:-migrationsdesc:-}
+\subsection{Схема migrations: описание}\label{subsec:migrationsdesc}
 
 Данная схема создана используемым для управления миграциями инструментом flyway и содержит
-единственную техническую таблицу flyway\_schema\_history с информацией о миграциях.
+единственную техническую таблицу `flyway\_schema\_history` с информацией о миграциях.

@@ -1,0 +1,21 @@
+.characteristics-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.characteristics-table td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.characteristics-table .char-key {
+    font-weight: bold;
+    text-align: left;
+    width: 50%;
+}
+
+.characteristics-table .char-value {
+    text-align: right;
+    width: 50%;
+}

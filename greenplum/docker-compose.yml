@@ -1,0 +1,21 @@
+version: '3'
+services:
+  gp_master_1:
+    image: andruche/greenplum:7.0.0
+    container_name: gp_master_1
+    ports:
+      - 5432:5432
+#    environment:
+    #			GP_USER: gpadmin       #not start
+    #			GP_PASSWORD: gpadmin   #not start
+    volumes:
+      #          - ./greenplum_data:/data #authentication required
+      - ./greenplum_shared:/usr/shared
+    networks:
+      - ch_ntw
+networks:
+  ch_ntw:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.222.1.0/24

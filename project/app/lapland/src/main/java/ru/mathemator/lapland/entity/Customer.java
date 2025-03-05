@@ -39,7 +39,7 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<Purchase> purchases = new LinkedHashSet<>();
+    private Set<Order> orders = new LinkedHashSet<>();
 
     @Column(name = "email", columnDefinition = "email_domain")
     private String email;

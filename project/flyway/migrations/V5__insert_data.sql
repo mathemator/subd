@@ -115,7 +115,7 @@ DO $$
 DECLARE i INT := 0;
 BEGIN
     WHILE i < 3000 LOOP
-        INSERT INTO purchase (customer_id, shop_id, purchase_date, total_amount)
+        INSERT INTO "order" (customer_id, shop_id, order_date, total_amount)
         VALUES (
             (SELECT id FROM customer ORDER BY random() LIMIT 1),
             (SELECT id FROM shop ORDER BY random() LIMIT 1),
@@ -123,7 +123,7 @@ BEGIN
             0 -- будет рассчитана позже
         ) RETURNING id INTO i;
 
-        INSERT INTO purchase_item (purchase_id, product_id, quantity)
+        INSERT INTO order_item (order_id, product_id, quantity)
         SELECT i, p.id, (1 + (FLOOR(random() * 1000))::INTEGER % 3)
         FROM product p ORDER BY random() LIMIT (1 + floor(random() * 3));
 
@@ -131,11 +131,11 @@ BEGIN
     END LOOP;
 END $$;
 
-UPDATE purchase p
+UPDATE "order" p
 SET total_amount = sub.total_amount_with_discount
 FROM (
     SELECT
-        p.id AS purchase_id,
+        p.id AS order_id,
         SUM(pi.quantity * pr.price) *
             CASE
                 WHEN c.loyalty_status = 'BRONZE' THEN 0.97
@@ -143,11 +143,11 @@ FROM (
                 WHEN c.loyalty_status = 'GOLD' THEN 0.93
             END AS total_amount_with_discount
     FROM
-        purchase_item pi
+        order_item pi
         JOIN product pr ON pi.product_id = pr.id
-        JOIN purchase p ON pi.purchase_id = p.id
+        JOIN "order" p ON pi.order_id = p.id
         JOIN customer c ON p.customer_id = c.id
     GROUP BY
         p.id, c.loyalty_status
 ) AS sub
-WHERE p.id = sub.purchase_id;
+WHERE p.id = sub.order_id;

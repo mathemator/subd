@@ -10,6 +10,16 @@ Spring-Boot+JPA и Hibernate.
     \item Совершению случайной покупки - для презентации вставки данных в БД.
 \end{itemize}
 
+\subsection{Поддержка транзакционности в приложении}\label{subsec:apptransaction}
+В серверном приложении используется механизм транзакций Spring для обеспечения целостности данных.
+Методы, выполняющие критически важные операции, такие как совершение покупки, аннотированы @Transactional,
+что позволяет автоматически управлять началом, фиксацией и откатом транзакции.
+По умолчанию в Spring используется уровень изоляции \textbf{READ\_COMMITED},
+который гарантирует, что транзакция не видит неподтверждённых изменений других транзакций,
+предотвращая ``грязные`` чтения.
+Такой подход обеспечивает корректность выполнения бизнес-логики, сохраняя консистентность данных в базе.
+
+
 \subsection{Пагинация в контексте работы с БД}\label{subsec:jpapagination}
 
 \subsubsection{Пагинация по умолчанию}\label{subsubsec:defaultpagination}
@@ -35,23 +45,25 @@ Spring-Boot+JPA и Hibernate.
 поле.
 Например, числовой `id`.
 В коде приложения это выглядит как код на HQL:
+\begin{figure}[H]
 \begin{lstlisting}[language=java, frame=single, keepspaces=true, showstringspaces=false, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:hqlquery}]
     @Query("""
-            from Purchase p
+            from Order p
               join fetch p.customer c
             where p.id > :lastId
             order by p.id asc
             limit :size
             """)
-    Slice<Purchase> findByIdGreaterThanOrderByIdAsc(Integer lastId, int size);
-\end{lstlisting}
+    Slice<Order> findByIdGreaterThanOrderByIdAsc(Integer lastId, int size);
+\end{lstlisting}\label{fig:hqlkeyfetchlisting}
+\end{figure}
 Заметим, что благодаря использованию join fetch была устранена известная \textbf{N+1} проблема при использовании ORM,
 когда при работе с связанными сущностями производятся дополнительные зопросы к БД для каждой сущности.
 
 Теперь в логе видим, без offset и count:
 \begin{figure}[H]
 \begin{lstlisting}[language=bash, frame=single, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:hiberpagelog}]
-2025-03-02 14:48:54 Hibernate: select p1_0.id,p1_0.customer_id,c1_0.id,c1_0.bonus_points,c1_0.email,c1_0.loyalty_status,c1_0.name,c1_0.phone,p1_0.purchase_date,p1_0.shop_id,p1_0.total_amount from business.purchase p1_0 join business.customer c1_0 on c1_0.id=p1_0.customer_id where p1_0.id>? order by p1_0.id fetch first ? rows only
+2025-03-02 14:48:54 Hibernate: select p1_0.id,p1_0.customer_id,c1_0.id,c1_0.bonus_points,c1_0.email,c1_0.loyalty_status,c1_0.name,c1_0.phone,p1_0.order_date,p1_0.shop_id,p1_0.total_amount from business.order p1_0 join business.customer c1_0 on c1_0.id=p1_0.customer_id where p1_0.id>? order by p1_0.id fetch first ? rows only
 \end{lstlisting}\label{fig:hibernooffsetlisting}
 \end{figure}
 

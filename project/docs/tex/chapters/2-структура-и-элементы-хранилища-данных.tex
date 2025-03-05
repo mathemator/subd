@@ -30,19 +30,19 @@
             \node (inventory) [left=of product] {inventory};
             \node (shop) [below=of inventory] {shop};
             \node (supplier) [right=of product] {supplier};
-            \node (purchase) [below=of product] {purchase};
-            \node (purchase_item) [right=of purchase] {purchase\_item};
-            \node (customer) [below=of purchase] {customer};
+            \node (order) [below=of product] {order};
+            \node (order_item) [right=of order] {order\_item};
+            \node (customer) [below=of order] {customer};
 
             % Связи между таблицами
             \draw[->] (product) -- (category);
             \draw[->] (product) -- (supplier);
             \draw[->] (inventory) -- (shop);
             \draw[->] (inventory) -- (product);
-            \draw[->] (purchase) -- (customer);
-            \draw[->] (purchase) -- (shop);
-            \draw[->] (purchase_item) -- (purchase);
-            \draw[->] (purchase_item) -- (product);
+            \draw[->] (order) -- (customer);
+            \draw[->] (order) -- (shop);
+            \draw[->] (order_item) -- (order);
+            \draw[->] (order_item) -- (product);
         \end{tikzpicture}
     }
     \caption{Схема связей таблиц}\label{fig:figure-tables}
@@ -170,7 +170,7 @@
 Несмотря на предполагаемую валидацию на бэкенде, правильные базовые типы в целом в базе не помешают.
 Перечисление поможет избежать случайных описок и логически ограничит значения.
 
-\subsubsection{Таблица purchase}
+\subsubsection{Таблица order}
 
 \begin
     \normalsize
@@ -185,7 +185,7 @@
         \hline
         shop\_id             & INT           & Ссылка на магазин (shop.id)      \\
         \hline
-        purchase\_date       & TIMESTAMP     & Дата покупки                     \\
+        order\_date       & TIMESTAMP     & Дата покупки                     \\
         \hline
         total\_amount        & NUMERIC(10,2) & Общая сумма покупки              \\
         \hline
@@ -195,7 +195,7 @@
 
 Используем BIGSERIAL для подстраховки от переполнения номеров покупок.
 
-\subsubsection{Таблица purchase\_item}
+\subsubsection{Таблица order\_item}
 
 \begin
     \normalsize
@@ -204,7 +204,7 @@
         \hline
         \textbf{Имя столбца} & \textbf{Тип} & \textbf{Описание}               \\
         \hline
-        purchase\_id         & BIGINT       & Ссылка на покупку (purchase.id) \\
+        order\_id         & BIGINT       & Ссылка на покупку (order.id) \\
         \hline
         product\_id          & INT          & Ссылка на продукт (product.id)  \\
         \hline
@@ -227,9 +227,9 @@
             \hline
             idx\_inventory\_product\_shop & inventory        & Индекс по продуктам и магазинам в инвентаре                                 \\
             \hline
-            idx\_purchase\_customer\_date & purchase         & Индекс по покупателю и дате покупки                                         \\
+            idx\_order\_customer\_date & order         & Индекс по покупателю и дате покупки                                         \\
             \hline
-            idx\_purchase\_brin           & purchase         & Индекс с использованием BRIN для диапазона дат покупок                      \\
+            idx\_order\_brin           & order         & Индекс с использованием BRIN для диапазона дат покупок                      \\
             \hline
             idx\_customer\_phone          & customer         & Уникальный индекс по телефону клиента                                       \\
             \hline
@@ -276,7 +276,7 @@
 \subsubsection{Процедуры}
 
 \begin{itemize}
-    \item \textbf{archive\_old\_purchases} – процедура для архивации устаревших данных о покупках.
+    \item \textbf{archive\_old\_orders} – процедура для архивации устаревших данных о покупках.
     \begin{itemize}
         \item Выполняет перенос устаревших записей в архивную таблицу.
         \item Освобождает основную таблицу от старых данных.
@@ -306,7 +306,7 @@
 
 \begin{lstlisting}[language=SQL, frame=single, keepspaces=true, showstringspaces=false, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:cronsql}]
 SELECT cron.schedule('0 4 * * *',
-    $$CALL business.archive_old_purchases();$$);
+    $$CALL business.archive_old_orders();$$);
 \end{lstlisting}
 
 \subsection{Схема cron: описание}\label{subsec:crondesc}

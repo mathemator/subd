@@ -1,5 +1,5 @@
-table_name: purchase
-main_dttm_col: purchase_date
+table_name: order
+main_dttm_col: order_date
 description: null
 default_endpoint: null
 offset: 0
@@ -26,7 +26,7 @@ metrics:
   extra: null
   warning_text: null
 columns:
-- column_name: purchase_date
+- column_name: order_date
   verbose_name: null
   is_dttm: true
   is_active: true

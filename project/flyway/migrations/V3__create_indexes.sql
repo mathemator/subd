@@ -8,8 +8,8 @@ CREATE INDEX idx_product_category ON product(category_id);
 
 CREATE INDEX idx_inventory_product_shop ON inventory(product_id, shop_id);
 
-CREATE INDEX idx_purchase_customer_date ON purchase(customer_id, purchase_date);
+CREATE INDEX idx_order_customer_date ON "order"(customer_id, order_date);
 
-CREATE INDEX idx_purchase_brin ON purchase USING BRIN(purchase_date);
+CREATE INDEX idx_order_brin ON "order" USING BRIN(order_date);
 
 CREATE UNIQUE INDEX idx_customer_phone ON customer(phone) WHERE phone IS NOT NULL;

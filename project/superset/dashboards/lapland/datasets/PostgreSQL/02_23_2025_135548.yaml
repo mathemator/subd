@@ -7,9 +7,9 @@ offset: 0
 cache_timeout: null
 catalog: lapland
 schema: business
-sql: "\tselect count(*), c.id as c_id, c.name as c_name\r\n\t\tfrom purchase_item\
-  \ pi \r\n\tjoin product pr on pi.product_id = pr.id\r\n\tjoin purchase pc on pi.purchase_id\
-  \ = pc.id\r\n\tjoin category c on pr.category_id = c.id\r\n\twhere pc.purchase_date\
+sql: "\tselect count(*), c.id as c_id, c.name as c_name\r\n\t\tfrom order_item\
+  \ pi \r\n\tjoin product pr on pi.product_id = pr.id\r\n\tjoin order pc on pi.order_id\
+  \ = pc.id\r\n\tjoin category c on pr.category_id = c.id\r\n\twhere pc.order_date\
   \ between (now() - INTERVAL '14 days') and now()\r\n\tgroup by c.id"
 params: null
 template_params: null

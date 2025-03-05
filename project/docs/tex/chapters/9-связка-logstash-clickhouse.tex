@@ -15,7 +15,7 @@ Logstash.
 В ходе развертывания решения возникла проблема в несоответствии timestamp-форматов, попадающих в Logstash и у
 Clickhouse.
 Для решения данной проблемы в конфигурацию был добавлен фильтр с функцией на ruby:
-\begin{lstlisting}[language=ruby, frame=single, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:rubylist}]
+\begin{lstlisting}[language=ruby, frame=single, keepspaces=true, showstringspaces=false, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:rubylist}]
 event.set('timestamp', event.get('timestamp').time.localtime.strftime('%Y-%m-%d %H:%M:%S'))
 \end{lstlisting}
 

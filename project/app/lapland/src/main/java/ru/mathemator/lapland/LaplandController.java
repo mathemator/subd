@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.mathemator.lapland.api.ProductDto;
-import ru.mathemator.lapland.api.PurchaseDto;
+import ru.mathemator.lapland.api.OrderDto;
 import ru.mathemator.lapland.service.ProductService;
-import ru.mathemator.lapland.service.PurchaseService;
+import ru.mathemator.lapland.service.OrderService;
 import ru.mathemator.lapland.service.RandomService;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class LaplandController {
 
     private final RandomService randomService;
     private final ProductService productService;
-    private final PurchaseService purchaseService;
+    private final OrderService orderService;
 
     @GetMapping("/")
     public String index() {
@@ -34,12 +34,12 @@ public class LaplandController {
         return productService.getProduct(id);
     }
 
-    @GetMapping("/purchases")
-    public List<PurchaseDto> getPurchases(
+    @GetMapping("/orders")
+    public List<OrderDto> getOrders(
             @RequestParam(required = false) Integer lastId,
             @RequestParam(defaultValue = "10") int size) {
 
-        return purchaseService.getPurchasePage(lastId, size);
+        return orderService.getOrderPage(lastId, size);
     }
 
     @GetMapping("/products")
@@ -48,12 +48,12 @@ public class LaplandController {
         return productService.getProductsPage(page, size);
     }
 
-    @PostMapping("/make-random-purchase")
-    public ResponseEntity<PurchaseDto> makRandomPurchase() {
+    @PostMapping("/make-random-order")
+    public ResponseEntity<OrderDto> makRandomOrder() {
         log.info("Запрос на создание случайной покупки");
-        PurchaseDto purchaseDto = randomService.makeRandomPurchase();
+        OrderDto orderDto = randomService.makeRandomOrder();
         log.info("Запрос на создание случайной покупки выполнен");
         return ResponseEntity.ok()
-                .body(purchaseDto);
+                .body(orderDto);
     }
 }

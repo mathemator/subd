@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from "./pages/Home";
 import Catalog from "./pages/Catalog";
-import Purchases from "./pages/Purchases";
+import Orders from "./pages/Orders";
 import ProductPage from "./pages/ProductPage";
 import About from "./pages/About";
 import { ConfigProvider } from './ConfigContext'; // Импортируем провайдер
@@ -16,7 +16,7 @@ function App() {
             <ul>
               <li><Link to="/">Главная</Link></li>
               <li><Link to="/catalog">Каталог</Link></li>
-              <li><Link to="/purchases">История покупок</Link></li>
+              <li><Link to="/orders">История покупок</Link></li>
               <li><Link to="/about">О нас</Link></li>
             </ul>
           </nav>
@@ -31,7 +31,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/catalog" element={<Catalog />} />
-              <Route path="/purchases" element={<Purchases />} />
+              <Route path="/orders" element={<Orders />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route path="/about" element={<About />} />
             </Routes>

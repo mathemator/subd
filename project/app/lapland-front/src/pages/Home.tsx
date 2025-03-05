@@ -5,9 +5,9 @@ function Home() {
       const [message, setMessage] = useState('');
         const { serverUrl } = useConfig(); // Получаем значение переменной окружения
 
-      const handlePurchase = async () => {
+      const handleOrder = async () => {
         try {
-          const response = await fetch(`${serverUrl}/lapland/make-random-purchase`, {
+          const response = await fetch(`${serverUrl}/lapland/make-random-order`, {
             method: 'POST',
           });
           if (response.ok) {
@@ -27,7 +27,7 @@ function Home() {
       <p>Выберите каталог, чтобы увидеть список товаров.</p>
 
       <h1>Или 🐶</h1>
-      <button onClick={handlePurchase}>Совершить случайную покупку</button>
+      <button onClick={handleOrder}>Совершить случайную покупку</button>
       <p>{message}</p>
     </div>
   );

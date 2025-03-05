@@ -3,7 +3,7 @@ package ru.mathemator.lapland.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.mathemator.lapland.api.PurchaseDto;
+import ru.mathemator.lapland.api.OrderDto;
 import ru.mathemator.lapland.entity.*;
 import ru.mathemator.lapland.repository.*;
 
@@ -20,16 +20,16 @@ public class RandomService {
 
     Random random = new Random();
 
-    private final PurchaseRepository purchaseRepository;
-    private final PurchaseItemRepository purchaseItemRepository;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final InventoryRepository inventoryRepository;
     private final CustomerRepository customerRepository;
     private final ShopRepository shopRepository;
 
-    public List<Purchase> getAllPurchases() {
-        return purchaseRepository.findAll();
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
     }
 
     public List<Category> getAllCategories() {
@@ -39,7 +39,7 @@ public class RandomService {
 
 
     @Transactional
-    public PurchaseDto makeRandomPurchase() {
+    public OrderDto makeRandomOrder() {
         List<Customer> allCustomers = customerRepository.findAll();
         Customer customer = allCustomers.get(random.nextInt(allCustomers.size()));
 
@@ -64,26 +64,26 @@ public class RandomService {
                 };
 
         BigDecimal price = product.getPrice().multiply(new BigDecimal(multiplier));
-        Purchase purchase = Purchase.builder()
-                .purchaseDate(Instant.now())
+        Order order = Order.builder()
+                .orderDate(Instant.now())
                 .customer(customer)
                 .shop(shop)
                 .totalAmount(price)
                 .build();
-        Purchase savedPurchase = purchaseRepository.save(purchase);
+        Order savedOrder = orderRepository.save(order);
 
-        PurchaseItem purchaseItem = PurchaseItem.builder()
-                .id(PurchaseItemId.builder()
-                        .purchaseId(savedPurchase.getId())
+        OrderItem orderItem = OrderItem.builder()
+                .id(OrderItemId.builder()
+                        .orderId(savedOrder.getId())
                         .productId(product.getId()).build())
                 .quantity(quantity)
-                .purchase(savedPurchase)
+                .order(savedOrder)
                 .product(product)
                 .build();
-        purchaseItemRepository.save(purchaseItem);
+        orderItemRepository.save(orderItem);
         inventory.setQuantity(inventory.getQuantity() - quantity);
         inventoryRepository.save(inventory);
 
-        return PurchaseDto.builder().id(savedPurchase.getId()).build();
+        return OrderDto.builder().id(savedOrder.getId()).build();
     }
 }

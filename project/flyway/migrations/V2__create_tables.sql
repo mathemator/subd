@@ -52,17 +52,17 @@ CREATE TABLE customer (
     bonus_points NUMERIC(10,2) NOT NULL DEFAULT 0 CHECK (bonus_points >= 0)
 );
 
-CREATE TABLE purchase (
+CREATE TABLE "order" (
     id BIGSERIAL PRIMARY KEY,
     customer_id INT NOT NULL REFERENCES customer(id),
     shop_id INT NOT NULL REFERENCES shop(id),
-    purchase_date TIMESTAMP DEFAULT NOW(),
+    order_date TIMESTAMP DEFAULT NOW(),
     total_amount NUMERIC(10,2) NOT NULL CHECK (total_amount >= 0)
 );
 
-CREATE TABLE purchase_item (
-    purchase_id BIGINT NOT NULL REFERENCES purchase(id) ON DELETE CASCADE,
+CREATE TABLE order_item (
+    order_id BIGINT NOT NULL REFERENCES "order"(id) ON DELETE CASCADE,
     product_id INT NOT NULL REFERENCES product(id),
     quantity INT NOT NULL CHECK (quantity > 0),
-    PRIMARY KEY (purchase_id, product_id)
+    PRIMARY KEY (order_id, product_id)
 );

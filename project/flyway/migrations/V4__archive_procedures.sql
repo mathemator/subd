@@ -1,11 +1,11 @@
 CREATE SCHEMA IF NOT EXISTS archive;
 
-CREATE TABLE IF NOT EXISTS archive.purchase (
-    LIKE business.purchase INCLUDING CONSTRAINTS INCLUDING INDEXES
+CREATE TABLE IF NOT EXISTS archive."order" (
+    LIKE business."order" INCLUDING CONSTRAINTS INCLUDING INDEXES
 );
 
-CREATE TABLE IF NOT EXISTS archive.purchase_item (
-    LIKE business.purchase_item INCLUDING CONSTRAINTS INCLUDING INDEXES
+CREATE TABLE IF NOT EXISTS archive.order_item (
+    LIKE business.order_item INCLUDING CONSTRAINTS INCLUDING INDEXES
 );
 
 CREATE OR REPLACE FUNCTION business.transliterate(input_text TEXT) RETURNS TEXT AS $$
@@ -39,23 +39,23 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
-CREATE OR REPLACE PROCEDURE business.archive_old_purchases()
+CREATE OR REPLACE PROCEDURE business.archive_old_orders()
 LANGUAGE plpgsql
 AS $$
 DECLARE
     batch_size INT := 1000;
     rows_moved INT;
 BEGIN
-    CREATE TEMP TABLE temp_purchase_batch (id INT) ON COMMIT DROP;
+    CREATE TEMP TABLE temp_order_batch (id INT) ON COMMIT DROP;
 
     LOOP
         -- Очищаем временную таблицу перед использованием
-        TRUNCATE TABLE temp_purchase_batch;
+        TRUNCATE TABLE temp_order_batch;
 
         -- Выбираем ID покупок для архивации и сохраняем их во временную таблицу
-        INSERT INTO temp_purchase_batch (id)
-        SELECT id FROM business.purchase
-        WHERE purchase_date < NOW() - INTERVAL '14 days'
+        INSERT INTO temp_order_batch (id)
+        SELECT id FROM business."order"
+        WHERE order_date < NOW() - INTERVAL '14 days'
         LIMIT batch_size
         FOR UPDATE SKIP LOCKED;
 
@@ -64,25 +64,25 @@ BEGIN
             EXIT;
         END IF;
 
-        -- Сначала архивируем связанные purchase_item
-        INSERT INTO archive.purchase_item
-        SELECT pi.* FROM business.purchase_item pi
-        JOIN temp_purchase_batch pb ON pi.purchase_id = pb.id;
+        -- Сначала архивируем связанные order_item
+        INSERT INTO archive.order_item
+        SELECT pi.* FROM business.order_item pi
+        JOIN temp_order_batch pb ON pi.order_id = pb.id;
 
-        -- Теперь архивируем purchase
-        INSERT INTO archive.purchase
-        SELECT * FROM business.purchase
-        WHERE id IN (SELECT id FROM temp_purchase_batch)
+        -- Теперь архивируем order
+        INSERT INTO archive.order
+        SELECT * FROM business.order
+        WHERE id IN (SELECT id FROM temp_order_batch)
         RETURNING 1 INTO rows_moved;
 
         -- Если ничего не перенеслось — выходим из цикла
         EXIT WHEN rows_moved IS NULL;
 
-        -- Теперь можно удалять данные из business.purchase_item
-        DELETE FROM business.purchase_item WHERE purchase_id IN (SELECT id FROM temp_purchase_batch);
+        -- Теперь можно удалять данные из business.order_item
+        DELETE FROM business.order_item WHERE order_id IN (SELECT id FROM temp_order_batch);
 
-        -- Теперь можно удалять из business.purchase
-        DELETE FROM business.purchase WHERE id IN (SELECT id FROM temp_purchase_batch);
+        -- Теперь можно удалять из business.order
+        DELETE FROM business.order WHERE id IN (SELECT id FROM temp_order_batch);
 
         -- Делаем небольшую паузу для снижения нагрузки
         PERFORM pg_sleep(0.1);
@@ -90,4 +90,4 @@ BEGIN
 END;
 $$;
 
-SELECT cron.schedule('0 4 * * *', $$CALL business.archive_old_purchases();$$);
+SELECT cron.schedule('0 4 * * *', $$CALL business.archive_old_orders();$$);

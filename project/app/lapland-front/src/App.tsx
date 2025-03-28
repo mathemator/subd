@@ -1,26 +1,22 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { CartProvider } from "./CartContext";
+import { ConfigProvider } from './ConfigContext'; // Импортируем провайдер
+import CartPage from "./pages/CartPage"; // Импортируем компонент корзины
 import Home from "./pages/Home";
 import Catalog from "./pages/Catalog";
 import Orders from "./pages/Orders";
 import ProductPage from "./pages/ProductPage";
 import About from "./pages/About";
-import { ConfigProvider } from './ConfigContext'; // Импортируем провайдер
+import Header from './pages/Header'; // Подключаем компонент заголовка
 import './App.css';
+
 
 function App() {
   return (
     <ConfigProvider>
+    <CartProvider>
       <Router>
-        <header className="header">
-          <nav>
-            <ul>
-              <li><Link to="/">Главная</Link></li>
-              <li><Link to="/catalog">Каталог</Link></li>
-              <li><Link to="/orders">История покупок</Link></li>
-              <li><Link to="/about">О нас</Link></li>
-            </ul>
-          </nav>
-        </header>
+        <Header /> {/* Добавляем компонент Header */}
 
         <div className="wrapper">
           <div className="sidebar-left">
@@ -32,6 +28,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/catalog" element={<Catalog />} />
               <Route path="/orders" element={<Orders />} />
+              <Route path="/cart" element={<CartPage />} /> {/* Новый маршрут для корзины */}
               <Route path="/product/:id" element={<ProductPage />} />
               <Route path="/about" element={<About />} />
             </Routes>
@@ -46,6 +43,7 @@ function App() {
           <p>© Санёк, 2025</p>
         </footer>
       </Router>
+      </CartProvider>
     </ConfigProvider>
   );
 }

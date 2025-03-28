@@ -5,7 +5,7 @@ FROM eclipse-temurin:21-jre AS runtime
 WORKDIR /app
 
 # 3. Копируем JAR-файл в контейнер
-COPY build/libs/lapland-0.0.1-SNAPSHOT.jar app.jar
+COPY build/libs/lapland-0.2.jar app.jar
 
 # 4. Указываем команду запуска приложения
 CMD ["java", "-jar", "app.jar"]

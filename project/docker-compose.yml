@@ -259,7 +259,7 @@ services:
       - clickhouse
 
   lapland-server-app:
-    image: lapland-server-app:0.1
+    image: lapland-server-app:0.2
     hostname: lapland-server-app
     container_name: lapland-server-app
     environment:
@@ -275,7 +275,7 @@ services:
         condition: service_started
 
   lapland-client-app:
-    image: lapland-client-app:0.1
+    image: lapland-client-app:0.2
     hostname: lapland-client-app
     container_name: lapland-client-app
     ports:

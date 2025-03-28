@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import ru.mathemator.lapland.api.ProductDto;
 import ru.mathemator.lapland.repository.ProductRepository;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -26,7 +28,6 @@ public class ProductService {
     }
 
     public Page<ProductDto> getProductsPage(int page, int size) {
-
         Pageable pageable = PageRequest.of(page, size);
         return productRepository.findAll(pageable)
                 .map(p -> ProductDto.builder()

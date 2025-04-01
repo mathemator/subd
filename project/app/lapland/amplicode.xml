@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AmplicodeReverseEngineeringSettings">
+    <database-infos>
+      <database-info dbms-id="postgres">
+        <mapping-types>
+          <mapping-type sql-type="email_domain" java-class="java.lang.String" use-column-definition="true" />
+          <mapping-type sql-type="phone_domain" java-class="java.lang.String" use-column-definition="true" />
+        </mapping-types>
+      </database-info>
+    </database-infos>
+  </component>
+</project>

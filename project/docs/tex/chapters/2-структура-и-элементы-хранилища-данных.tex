@@ -1,0 +1,320 @@
+\subsection{Схемы}\label{subsec:schemas}
+В базе созданы следующие схемы:
+\begin{itemize}
+    \item \textbf{archive}: архивированные данные, для разгрузки оперативной схемы.
+    \item \textbf{business}: оперативная схема с данными о покупках в сети зоомагазинов.
+    \item \textbf{cron}: техническая схема для элементов расширения cron.
+    \item \textbf{migrations}: техническая схема инструмента миграции flyway.
+    \item \textbf{public}: общая начальная схема PostgreSQL\@.
+\end{itemize}
+
+\subsection{Схема archive: описание}\label{subsec:archive}
+
+Архивируются только данные о покупках, как наиболее тяжёлые и интенсивные.
+Структура и индексы полностью дублируют прототипы из бизнес-схемы.
+
+\subsection{Схема business: описание}\label{subsec:business}
+
+Оперативные бизнес-данные о покупках, магазинах, покупателях.
+
+\begin{figure}[h]
+    \centering
+    \resizebox{\textwidth}{!}{%
+        \begin{tikzpicture}[
+            node distance=2cm and 3cm,
+            every node/.style={draw, rectangle, rounded corners, minimum width=3cm, minimum height=1cm, align=center}
+        ]
+            % Определяем таблицы
+            \node (category) {category};
+            \node (product) [below=of category] {product};
+            \node (inventory) [left=of product] {inventory};
+            \node (shop) [below=of inventory] {shop};
+            \node (supplier) [right=of product] {supplier};
+            \node (order) [below=of product] {order};
+            \node (order_item) [right=of order] {order\_item};
+            \node (customer) [below=of order] {customer};
+
+            % Связи между таблицами
+            \draw[->] (product) -- (category);
+            \draw[->] (product) -- (supplier);
+            \draw[->] (inventory) -- (shop);
+            \draw[->] (inventory) -- (product);
+            \draw[->] (order) -- (customer);
+            \draw[->] (order) -- (shop);
+            \draw[->] (order_item) -- (order);
+            \draw[->] (order_item) -- (product);
+        \end{tikzpicture}
+    }
+    \caption{Схема связей таблиц}\label{fig:figure-tables}
+\end{figure}
+
+\subsubsection{Таблица category}
+
+\begin
+    \normalsize
+    \renewcommand{\arraystretch}{1.5} % Регулируем высоту строк
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Имя столбца} & \textbf{Тип} & \textbf{Описание}                  \\
+        \hline
+        id                   & SERIAL       & Уникальный идентификатор категории \\
+        \hline
+        name                 & TEXT         & Название категории                 \\
+        \hline
+    \end{tabular}
+\end
+
+\subsubsection{Таблица product}
+
+\begin
+    \normalsize
+    \renewcommand{\arraystretch}{1.5} % Регулируем высоту строк
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Имя столбца} & \textbf{Тип}  & \textbf{Описание}                      \\
+        \hline
+        id                   & SERIAL        & Уникальный идентификатор продукта      \\
+        \hline
+        name                 & TEXT          & Название продукта                      \\
+        \hline
+        description          & TEXT          & Описание продукта                      \\
+        \hline
+        category\_id         & INT           & Ссылка на категорию (category.id)      \\
+        \hline
+        price                & NUMERIC(10,2) & Цена продукта                          \\
+        \hline
+        characteristics      & JSONB         & Характеристики продукта в формате JSON \\
+        \hline
+    \end{tabular}
+\end
+
+\subsubsection{Таблица shop}
+
+\begin
+    \normalsize
+    \renewcommand{\arraystretch}{1.5} % Регулируем высоту строк
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Имя столбца} & \textbf{Тип} & \textbf{Описание}                 \\
+        \hline
+        id                   & SERIAL       & Уникальный идентификатор магазина \\
+        \hline
+        name                 & TEXT         & Название магазина                 \\
+        \hline
+        location             & TEXT         & Местоположение магазина           \\
+        \hline
+    \end{tabular}
+\end
+
+\subsubsection{Таблица inventory}
+
+\begin
+    \normalsize
+    \renewcommand{\arraystretch}{1.5} % Регулируем высоту строк
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Имя столбца} & \textbf{Тип} & \textbf{Описание}              \\
+        \hline
+        shop\_id             & INT          & Ссылка на магазин (shop.id)    \\
+        \hline
+        product\_id          & INT          & Ссылка на продукт (product.id) \\
+        \hline
+        quantity             & INT          & Количество товара в магазине   \\
+        \hline
+    \end{tabular}
+\end
+
+\subsubsection{Таблица supplier}
+
+\begin
+    \normalsize
+    \renewcommand{\arraystretch}{1.5} % Регулируем высоту строк
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Имя столбца} & \textbf{Тип} & \textbf{Описание}                   \\
+        \hline
+        id                   & SERIAL       & Уникальный идентификатор поставщика \\
+        \hline
+        name                 & TEXT         & Название поставщика                 \\
+        \hline
+        contact\_info        & TEXT         & Контактная информация поставщика    \\
+        \hline
+    \end{tabular}
+\end
+
+\subsubsection{Таблица customer}
+
+\begin
+    \normalsize
+    \renewcommand{\arraystretch}{1.5} % Регулируем высоту строк
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Имя столбца} & \textbf{Тип}    & \textbf{Описание}                  \\
+        \hline
+        id                   & SERIAL          & Уникальный идентификатор клиента   \\
+        \hline
+        phone                & phone\_domain   & Телефон клиента                    \\
+        \hline
+        email                & email\_domain   & Электронная почта клиента          \\
+        \hline
+        name                 & TEXT            & Имя клиента                        \\
+        \hline
+        loyalty\_status      & loyalty\_status & Статус лояльности клиента          \\
+        \hline
+        bonus\_points        & NUMERIC(10,2)   & Количество бонусных баллов клиента \\
+        \hline
+    \end{tabular}
+    \vspace{10pt} % или \bigskip, если нужно побольше
+\end
+
+Несмотря на предполагаемую валидацию на бэкенде, правильные базовые типы в целом в базе не помешают.
+Перечисление поможет избежать случайных описок и логически ограничит значения.
+
+\subsubsection{Таблица order}
+
+\begin
+    \normalsize
+    \renewcommand{\arraystretch}{1.5} % Регулируем высоту строк
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Имя столбца} & \textbf{Тип}  & \textbf{Описание}                \\
+        \hline
+        id                   & BIGSERIAL     & Уникальный идентификатор покупки \\
+        \hline
+        customer\_id         & INT           & Ссылка на клиента (customer.id)  \\
+        \hline
+        shop\_id             & INT           & Ссылка на магазин (shop.id)      \\
+        \hline
+        order\_date       & TIMESTAMP     & Дата покупки                     \\
+        \hline
+        total\_amount        & NUMERIC(10,2) & Общая сумма покупки              \\
+        \hline
+    \end{tabular}
+    \vspace{10pt} % или \bigskip, если нужно побольше
+\end
+
+Используем BIGSERIAL для подстраховки от переполнения номеров покупок.
+
+\subsubsection{Таблица order\_item}
+
+\begin
+    \normalsize
+    \renewcommand{\arraystretch}{1.5} % Регулируем высоту строк
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Имя столбца} & \textbf{Тип} & \textbf{Описание}               \\
+        \hline
+        order\_id         & BIGINT       & Ссылка на покупку (order.id) \\
+        \hline
+        product\_id          & INT          & Ссылка на продукт (product.id)  \\
+        \hline
+        quantity             & INT          & Количество товара в покупке     \\
+        \hline
+    \end{tabular}
+\end
+
+\subsubsection{Индексы}
+
+\begin{center}
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|l|l|l|}
+            \hline
+            \textbf{Имя индекса}          & \textbf{Таблица} & \textbf{Описание}                                                           \\
+            \hline
+            idx\_product\_search          & product          & Индекс для поиска по описанию и характеристикам продукта (используется GIN) \\
+            \hline
+            idx\_product\_category        & product          & Индекс по категории продукта (category\_id)                                 \\
+            \hline
+            idx\_inventory\_product\_shop & inventory        & Индекс по продуктам и магазинам в инвентаре                                 \\
+            \hline
+            idx\_order\_customer\_date & order         & Индекс по покупателю и дате покупки                                         \\
+            \hline
+            idx\_order\_brin           & order         & Индекс с использованием BRIN для диапазона дат покупок                      \\
+            \hline
+            idx\_customer\_phone          & customer         & Уникальный индекс по телефону клиента                                       \\
+            \hline
+        \end{tabular}
+    }
+\end{center}
+
+\subsection{Пользовательские типы данных}\label{subsec:usertypes}
+
+В данной секции приведены пользовательские типы и домены, используемые в базе данных.
+
+\begin{itemize}
+    \item \textbf{email\_domain} – текстовый тип, содержащий email-адрес.
+    Соответствует регулярному выражению:
+    \begin{verbatim}
+^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$
+    \end{verbatim}
+
+    \item \textbf{phone\_domain} – текстовый тип для хранения телефонных номеров.
+    Допустимые значения:
+    \begin{verbatim}
+^\+?\d{10,15}$
+    \end{verbatim}
+
+    \item \textbf{loyalty\_status} – перечислимый тип, определяющий уровень лояльности клиента.
+    Возможные значения:
+    \begin{center}
+        \begin{tabular}{|c|c|}
+            \hline
+            Значение & Описание        \\
+            \hline
+            BRONZE   & Базовый уровень \\
+            SILVER   & Средний уровень \\
+            GOLD     & Высший уровень  \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{itemize}
+
+\subsection{Процедуры, функции и задания по расписанию}\label{subsec:procedures}
+
+В данной секции приведены хранимые процедуры, функции и задания, выполняемые в базе данных.
+
+\subsubsection{Процедуры}
+
+\begin{itemize}
+    \item \textbf{archive\_old\_orders} – процедура для архивации устаревших данных о покупках.
+    \begin{itemize}
+        \item Выполняет перенос устаревших записей в архивную таблицу.
+        \item Освобождает основную таблицу от старых данных.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Функции}
+
+\begin{itemize}
+    \item \textbf{transliterate} – функция для транслитерации текста.
+    \begin{itemize}
+        \item Принимает строку на входе.
+        \item Возвращает строку, в которой символы заменены на их латинские аналоги.
+    \end{itemize}
+\end{itemize}
+
+Функция может пригодиться при миграциях и расширении БД.
+В данном проекте она нашла применение для эстетичности генерируемых данных :)
+
+\subsubsection{Задание по расписанию}
+
+В базе используется планировщик задач для автоматического выполнения архивации старых покупок.
+
+\begin{itemize}
+    \item \textbf{Задание архивации:} выполняется ежедневно в 04:00.
+\end{itemize}
+
+\begin{lstlisting}[language=SQL, frame=single, keepspaces=true, showstringspaces=false, basicstyle=\normalsize\ttfamily, breaklines=true,label={lst:cronsql}]
+SELECT cron.schedule('0 4 * * *',
+    $$CALL business.archive_old_orders();$$);
+\end{lstlisting}
+
+\subsection{Схема cron: описание}\label{subsec:crondesc}
+
+Данная схема создана подключенным в ходе инициализации БД расширением pg\_cron и содержит технические таблицы
+`job` и `job\_run\_details` с информацией о заданиях.
+
+\subsection{Схема migrations: описание}\label{subsec:migrationsdesc}
+
+Данная схема создана используемым для управления миграциями инструментом flyway и содержит
+единственную техническую таблицу `flyway\_schema\_history` с информацией о миграциях.

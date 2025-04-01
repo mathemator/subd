@@ -1,0 +1,27 @@
+К заполнению БД тестовыми данными было решено подойти с изыском и использованием возможностей SQL\@.
+
+Вот пример команды по вставке 300 клиентов, использующий ветвление с CASE и арифметических операций,
+конструкций с ARRAY, функциями RANDOM, LPAD, FLOOR, LOWER, REPLACE, встроенной функцией `generate\_series`
+и объявленной `transliterate`, конкатенацией для конструирования значений, а также приведение типов через `::`.
+
+\begin{lstlisting}[language=SQL, frame=single, basicstyle=\small\ttfamily, breaklines=true,label={lst:examplecustomer}]
+INSERT INTO customer (id, name, email, phone, loyalty_status, bonus_points)
+SELECT
+id,
+CASE
+WHEN id BETWEEN 1 AND 100 THEN
+(ARRAY['Алексей', 'Иван', 'Пётр', 'Дмитрий', 'Сергей', 'Артём', 'Егор', 'Михаил', 'Олег', 'Владимир'])[(id - 1) % 10 + 1]
+...
+END,
+LOWER(REPLACE(business.transliterate(
+CASE
+WHEN id BETWEEN 1 AND 100 THEN
+(ARRAY['Алексей', 'Иван', 'Пётр', 'Дмитрий', 'Сергей', 'Артём', 'Егор', 'Михаил', 'Олег', 'Владимир'])[(id - 1) % 10 + 1]
+...
+END
+), ' ', '')) || '@lapland.ru',
+'+79' || LPAD(FLOOR(RANDOM() * 100)::TEXT, 2, '0') || LPAD(id::TEXT, 3, '0') || LPAD(FLOOR(RANDOM() * 10000)::TEXT, 4, '0'),
+(ARRAY['BRONZE'::business.loyalty_status, 'SILVER'::business.loyalty_status, 'GOLD'::business.loyalty_status])[FLOOR(RANDOM() * 3 + 1)],
+FLOOR(RANDOM() * 1000)
+FROM generate_series(1, 300) AS id;
+\end{lstlisting}

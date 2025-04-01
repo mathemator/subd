@@ -1,0 +1,314 @@
+version: '3.8'
+
+services:
+  zoo1:
+    image: zookeeper:3.4
+    hostname: zoo1
+    ports:
+      - 2191:2181
+    networks:
+      - patroni
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+
+  zoo2:
+    image: zookeeper:3.4
+    hostname: zoo2
+    networks:
+      - patroni
+    ports:
+      - 2192:2181
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
+
+  zoo3:
+    image: zookeeper:3.4
+    hostname: zoo3
+    networks:
+      - patroni
+    ports:
+      - 2193:2181
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
+
+  patroni1:
+    image: patroni-test
+    networks:
+      - patroni
+    ports:
+      - 5441:5432
+      - 8091:8091
+    hostname: patroni1
+    volumes:
+      - patroni1:/data/patroni
+    environment:
+      PATRONI_API_CONNECT_PORT: 8091
+      REPLICATION_NAME: replicator
+      REPLICATION_PASS: replpass
+      SU_NAME: postgres
+      SU_PASS: postgres
+      POSTGRES_APP_ROLE_PASS: appass
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+
+  patroni2:
+    image: patroni-test
+    networks:
+      - patroni
+    ports:
+      - 5442:5432
+      - 8092:8091
+    hostname: patroni2
+    volumes:
+      - patroni2:/data/patroni
+    environment:
+      PATRONI_API_CONNECT_PORT: 8091
+      REPLICATION_NAME: replicator
+      REPLICATION_PASS: replpass
+      SU_NAME: postgres
+      SU_PASS: postgres
+      POSTGRES_APP_ROLE_PASS: appass
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+      - patroni1
+
+  patroni3:
+    image: patroni-test
+    networks:
+      - patroni
+    ports:
+      - 5443:5432
+      - 8093:8091
+    hostname: patroni3
+    volumes:
+      - patroni3:/data/patroni
+    environment:
+      PATRONI_API_CONNECT_PORT: 8091
+      REPLICATION_NAME: replicator
+      REPLICATION_PASS: replpass
+      SU_NAME: postgres
+      SU_PASS: postgres
+      POSTGRES_APP_ROLE_PASS: appass
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+      - patroni1
+
+  superset:
+    image: apache/superset
+    container_name: superset
+    ports:
+      - "8089:8089"
+    environment:
+      SUPERSET_CONFIG_PATH: /etc/superset_config.py
+      SUPERSET_ADMIN_USERNAME: superset
+      SUPERSET_ADMIN_PASSWORD: superset
+      SUPERSET_ADMIN_FIRST_NAME: Aleksandr
+      SUPERSET_ADMIN_LAST_NAME: Goppe
+      SUPERSET_ADMIN_EMAIL: mathemator@yandex.ru
+    volumes:
+      - ./superset/superset_config.py:/etc/superset_config.py
+      - ./superset/dashboards:/app/dashboard_archive
+    networks:
+      - patroni
+    depends_on:
+      - haproxy
+    command: >
+      /bin/bash -c "pip install psycopg2-binary && 
+        superset db upgrade &&
+        superset init &&
+        superset fab create-admin --username superset --firstname Aleksandr --lastname Goppe --email mathemator@yandex.ru --password superset &&
+        superset run -p 8089 --with-threads --reload --host 0.0.0.0 &
+          until curl -s -o /dev/null -w '%{http_code}' http://localhost:8089 | grep -qE '200|302'; do
+            echo 'Waiting for Superset to start...';
+            sleep 10;  # Повторяем запрос каждые 10 секунд
+          done;
+          echo 'Superset is up! Now starting import.';
+          /app/dashboard_archive/lapland/import.sh &&
+        tail -f /dev/null
+        "
+
+  haproxy:
+    image: haproxy-patroni
+    networks:
+      - patroni
+    ports:
+      - 5000:5000
+      - 7000:7000
+    hostname: haproxy
+    depends_on:
+      - patroni1
+      - patroni2
+      - patroni3
+
+  db-script-runner:
+    image: postgres:17-bullseye  # Используем стандартный образ PostgreSQL для выполнения скриптов
+    depends_on:
+      - haproxy  # Ждём запуска HAProxy перед запуском скрипта
+    entrypoint: ["sh", "-c", "
+      until pg_isready -h haproxy -p 5000; do 
+        echo waiting for database; 
+        sleep 2; 
+      done; 
+      PGPASSWORD=postgres psql -h haproxy -p 5000 -U postgres -d postgres -f /init-script/create-db.sql;
+      PGPASSWORD=postgres psql -h haproxy -p 5000 -U postgres -d lapland -f /init-script/set-db.sql;
+      "]
+    volumes:
+      - ./scripts/init-script:/init-script  # Монтируем скрипты, чтобы выполнить их
+    networks:
+      - patroni
+
+  flyway:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://haproxy:5000/lapland -user=lapland -password=lapland -baselineOnMigrate=true migrate
+    volumes:
+      - ./flyway/migrations:/flyway/sql
+      - ./flyway/flyway.conf:/flyway/flyway.conf
+    depends_on:
+      db-script-runner:
+        condition: service_completed_successfully
+    networks:
+      - patroni
+
+  postgres_exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    container_name: postgres_exporter
+    restart: always
+    environment:
+      DATA_SOURCE_NAME: "postgresql://observer:observer@haproxy:5000/lapland?sslmode=disable"
+    ports:
+      - "9187:9187"
+    depends_on:
+      db-script-runner:
+        condition: service_completed_successfully
+    networks:
+      - patroni
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+    depends_on:
+      - postgres_exporter
+    networks:
+      - patroni
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_USER=grafana
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+      - GF_SECURITY_DISABLE_INITIAL_ADMIN_PASSWORD_HINT=true
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    depends_on:
+      - prometheus
+    networks:
+      - patroni
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse
+    ports:
+      - "8123:8123"  # HTTP-интерфейс
+      - "9000:9000"  # Native TCP интерфейс для клиентов
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./clickhouse/init-clickhouse.sql:/docker-entrypoint-initdb.d/init-clickhouse.sql
+    environment:
+      - CLICKHOUSE_USER=admin
+      - CLICKHOUSE_PASSWORD=admin
+      - CLICKHOUSE_DB=logs
+    networks:
+      - patroni
+
+  logstash:
+    image: logstash-test
+    container_name: logstash
+    ports:
+      - "9600:9600"  # Порт для приема логов (TCP)
+      - "9601:9601"
+    volumes:
+      - ./logstash/config:/usr/share/logstash/config  # Конфигурация Logstash
+      - ./logstash/pipeline:/usr/share/logstash/pipeline  # Папка с конфигурацией pipeline
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"  # Ограничение памяти
+    networks:
+      - patroni
+    depends_on:
+      - clickhouse
+
+  lapland-server-app:
+    image: lapland-server-app:0.2
+    hostname: lapland-server-app
+    container_name: lapland-server-app
+    environment:
+      - LOGSTASH_HOST=logstash
+      - LOGSTASH_PORT=9601
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://haproxy:5000/lapland?currentSchema=business
+    ports:
+      - "8080:8080"
+    networks:
+      - patroni
+    depends_on:
+      clickhouse:
+        condition: service_started
+
+  lapland-client-app:
+    image: lapland-client-app:0.2
+    hostname: lapland-client-app
+    container_name: lapland-client-app
+    ports:
+      - "5173:80"
+    networks:
+      - patroni
+    depends_on:
+      lapland-server-app:
+        condition: service_started
+
+  curl_runner:
+    image: curlimages/curl:latest
+    container_name: curl_runner
+    volumes:
+      - ./scripts/curl:/curl
+    entrypoint: ["tail", "-f", "/dev/null"]
+    network_mode: host
+
+volumes:
+  patroni1:
+    driver: local
+  patroni2:
+    driver: local
+  patroni3:
+    driver: local
+  pg_data:
+    driver: local
+  grafana_data:
+    driver: local
+  clickhouse_data:
+    driver: local
+
+networks:
+  patroni:
+    driver: bridge
+

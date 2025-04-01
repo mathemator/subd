@@ -1,0 +1,70 @@
+table_name: "\u041F\u043E\u043A\u0443\u043F\u043A\u0438 \u043F\u043E \u043A\u0430\u0442\
+  \u0435\u0433\u043E\u0440\u0438\u044F\u043C 02/23/2025 13:55:48"
+main_dttm_col: null
+description: null
+default_endpoint: null
+offset: 0
+cache_timeout: null
+catalog: lapland
+schema: business
+sql: "\tselect count(*), c.id as c_id, c.name as c_name\r\n\t\tfrom order_item\
+  \ pi \r\n\tjoin product pr on pi.product_id = pr.id\r\n\tjoin order pc on pi.order_id\
+  \ = pc.id\r\n\tjoin category c on pr.category_id = c.id\r\n\twhere pc.order_date\
+  \ between (now() - INTERVAL '14 days') and now()\r\n\tgroup by c.id"
+params: null
+template_params: null
+filter_select_enabled: true
+fetch_values_predicate: null
+extra: null
+normalize_columns: false
+always_filter_main_dttm: false
+uuid: a1e26065-20f7-404b-9590-51b0f9d7a216
+metrics:
+- metric_name: count
+  verbose_name: COUNT(*)
+  metric_type: count
+  expression: COUNT(*)
+  description: null
+  d3format: null
+  currency: null
+  extra: null
+  warning_text: null
+columns:
+- column_name: count
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: LONGINTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: c_id
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: INTEGER
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: c_name
+  verbose_name: null
+  is_dttm: false
+  is_active: true
+  type: STRING
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+version: 1.0.0
+database_uuid: 80cb2793-5aa9-41cc-9912-1bb2f9bae79b
